@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "683920138343",
+    "project_id": "foodstruck-c51ef",
+    "storage_bucket": "foodstruck-c51ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683920138343:android:17774d50cf1ff66f58f4c2",
+        "android_client_info": {
+          "package_name": "edu.ith.foodstruck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683920138343-7jca2vmt5rmntfb0md01i7vbj62euke3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsIHmz-9NMHeAblmuWH_L0ZMRWJKh4KmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683920138343-7jca2vmt5rmntfb0md01i7vbj62euke3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
