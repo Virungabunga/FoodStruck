@@ -11,6 +11,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_maps)
         val db = Firebase.firestore
 
-        
+
     }
 }
