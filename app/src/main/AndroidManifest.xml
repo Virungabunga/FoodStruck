@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodStruck"
         tools:targetApi="31">
-
+        <activity
+            android:name=".PresentationActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -29,10 +31,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCNp6UeFDDvTRy4dvT9i4vo8OH2qCSkS2g" />
 
-        <activity
-            android:name=".MapsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_maps" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
