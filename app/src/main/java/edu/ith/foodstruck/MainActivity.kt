@@ -1,6 +1,7 @@
 package edu.ith.foodstruck
 
 import FoodTruck
+import android.icu.text.CaseMap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -64,11 +65,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
 
                var long = foodTruckList[0].long
+                var title =foodTruckList[0].companyName
                 var  lat = foodTruckList[0].lat
 
                 if (long != null) {
                     if (lat != null) {
-                        addMarker(lat,long)
+                        if (title != null) {
+                            addMarker(lat,long,title)
+                        }
                     }
                 }
 
@@ -78,11 +82,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-    fun addMarker(lat:Double,long :Double) {
+    fun addMarker(lat:Double,long :Double, title:String) {
 
         mMap.addMarker(
             MarkerOptions().position(LatLng(long,lat))
-                .title("")
+                .title(title)
                 .icon(
                     BitmapDescriptorFactory.fromResource(
                         R.drawable.smallicon
