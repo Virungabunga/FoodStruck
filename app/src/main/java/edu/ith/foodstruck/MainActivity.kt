@@ -1,10 +1,12 @@
 package edu.ith.foodstruck
 
 import FoodTruck
+import android.graphics.drawable.Icon
 import android.icu.text.CaseMap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.cardview.widget.CardView
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -12,6 +14,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldPath.documentId
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     18.067196534476423,
                 ),
                 10F,))
+
 
         /*addFoodTruck()*/
 
