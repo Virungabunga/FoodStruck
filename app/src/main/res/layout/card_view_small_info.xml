@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="12dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        >
+
+        <ImageView
+            android:id="@+id/iv_small_info"
+            android:scaleType="fitStart"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_gravity="left"
+            android:layout_margin="0dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/foodtrucks"
+            android:alpha=".75"/>
+
+        <TextView
+            android:id="@+id/tv_small_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/roboto_thin"
+            android:textColor="#040404"
+            android:textSize="20sp"
+            tools:text="Pelles Foodtruck" />
+
+        <TextView
+            android:id="@+id/tv_Small_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_horizontal"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="70dp"
+            android:fontFamily="@font/roboto_thin"
+            tools:text="Italian food" />
+
+        <TextView
+            android:id="@+id/tv_small_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#D86C6C"
+            android:layout_gravity="right|center_horizontal"
+            android:layout_marginTop="75dp"
+            android:layout_marginRight="80dp"
+            android:text="***** $$$" />
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
