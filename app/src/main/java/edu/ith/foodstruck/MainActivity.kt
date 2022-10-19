@@ -27,33 +27,37 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMainBinding
     private lateinit var db:FirebaseFirestore
-    private lateinit var oscarFoodTruck:FoodTruck
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          db = Firebase.firestore
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        oscarFoodTruck = FoodTruck("Oscars Mackor",
-            R.drawable.smallicon,
-            59.3609701472053, 17.96979995865056,)
-
-        db.collection("FoodTruck")
-            .add(oscarFoodTruck)
-
 
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        readFromFirestore()
+        mMap.moveCamera(CameraUpdateFactory
+            .newLatLngZoom(
+                LatLng(
+                    59.33507323679574,
+                    18.067196534476423,
+                ),
+                10F,))
 
-       val food1 = db.collection("FoodTruck")
-           .get()
+        /*addFoodTruck()*/
+
+
+
+    }
+
+    fun readFromFirestore(){
+        db.collection("FoodTruck")
+            .get()
             .addOnSuccessListener { documentSnapshot ->
                 val foodTruckList = mutableListOf<FoodTruck>()
 
@@ -63,25 +67,32 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         foodTruckList.add(truck)
 
                 }
+                for (truck in foodTruckList) {
 
-               var long = foodTruckList[0].long
-                var title =foodTruckList[0].companyName
-                var  lat = foodTruckList[0].lat
+                var long = truck.long
+                var title = truck.companyName
+                var lat = truck.lat
+                    if (long != null) {
+                        if (lat != null) {
+                            if (title != null) {
+                                addMarker(lat,long,title)
 
-                if (long != null) {
-                    if (lat != null) {
-                        if (title != null) {
-                            addMarker(lat,long,title)
+                        }
+
                         }
                     }
                 }
 
-           }
-
+            }
     }
+    fun addFoodTruck(){
+        var kosayFoodTruck = FoodTruck("Kosays fine dining",
+            R.drawable.smallicon,
+            59.20570928820239, 17.818639780606336)
 
-
-
+        db.collection("FoodTruck")
+            .add(kosayFoodTruck)
+    }
     fun addMarker(lat:Double,long :Double, title:String) {
 
         mMap.addMarker(
@@ -93,7 +104,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     )
                 )
         )
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(long,lat)))
+
+
     }
 
 }
