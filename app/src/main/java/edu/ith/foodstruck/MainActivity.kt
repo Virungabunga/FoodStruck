@@ -6,7 +6,15 @@ import android.icu.text.CaseMap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+
 import androidx.cardview.widget.CardView
+
+import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -30,15 +38,54 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMainBinding
     private lateinit var db:FirebaseFirestore
+
+    lateinit var toggle: ActionBarDrawerToggle
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
          db = Firebase.firestore
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        binding.apply {
+            toggle = ActionBarDrawerToggle(this@MainActivity, drawerLayout, R.string.open, R.string.close)
+            drawerLayout.addDrawerListener(toggle)
+            toggle.syncState()
 
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+            navView.setNavigationItemSelectedListener {
+                when (it.itemId) {
+                    R.id.firstItem -> {
+                        Toast.makeText(this@MainActivity, "First Item Clicked", Toast.LENGTH_SHORT).show()
+                    }
+                    R.id.secondtItem -> {
+                        Toast.makeText(this@MainActivity, "Second Item Clicked", Toast.LENGTH_SHORT).show()
+                    }
+                    R.id.thirdItem -> {
+                        Toast.makeText(this@MainActivity, "third Item Clicked", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                true
+            }
+        }
+
+
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)){
+            true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
