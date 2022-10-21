@@ -3,15 +3,19 @@ package edu.ith.foodstruck
 import FoodTruck
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -20,19 +24,24 @@ import com.google.firebase.ktx.Firebase
 import edu.ith.foodstruck.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMainBinding
     private lateinit var db:FirebaseFirestore
-
+    private lateinit var marker:Marker
     lateinit var toggle: ActionBarDrawerToggle
+    lateinit var tvSmallRating:TextView
+    lateinit var cardView:CardView
+    lateinit var smalltitle:TextView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+       //var tvSmallInfo:TextView = findViewById(R.id.tv_small_title)
 
-
+        //cardView =findViewById(R.id.cardView)
          db = Firebase.firestore
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,6 +50,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        tvSmallRating =findViewById(R.id.tv_small_rating)
+        smalltitle=findViewById(R.id.tv_small_title)
+       cardView=findViewById(R.id.cardView)
         binding.apply {
             toggle = ActionBarDrawerToggle(this@MainActivity, drawerLayout, R.string.open, R.string.close)
             drawerLayout.addDrawerListener(toggle)
@@ -76,8 +89,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
         readFromFirestore()
+        mMap = googleMap
         mMap.moveCamera(CameraUpdateFactory
             .newLatLngZoom(
                 LatLng(
@@ -86,12 +99,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 ),
                 10F,))
 
+            googleMap.setOnMarkerClickListener(this)
 
-        /*addFoodTruck()*/
 
 
 
     }
+
+
 
     fun readFromFirestore(){
         db.collection("FoodTruck")
@@ -107,18 +122,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
                 for (truck in foodTruckList) {
 
-                var long = truck.long
-                var title = truck.companyName
-                var lat = truck.lat
-                    if (long != null) {
-                        if (lat != null) {
-                            if (title != null) {
-                                addMarker(lat,long,title)
 
-                        }
-
-                        }
-                    }
+                    addMarker(truck)
                 }
 
             }
@@ -131,19 +136,36 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         db.collection("FoodTruck")
             .add(kosayFoodTruck)
     }
-    fun addMarker(lat:Double,long :Double, title:String) {
+    fun addMarker(truck: FoodTruck) {//lat:Double,long :Double, title:String) {
 
-        mMap.addMarker(
-            MarkerOptions().position(LatLng(long,lat))
-                .title(title)
-                .icon(
-                    BitmapDescriptorFactory.fromResource(
-                        R.drawable.smallicon
+
+
+            val marker = mMap.addMarker(
+
+                MarkerOptions().position(LatLng(truck.long!!, truck.lat!!))
+                    .title(truck.companyName)
+                    .icon(
+                        BitmapDescriptorFactory.fromResource(
+                            R.drawable.smallicon
+                        )
                     )
-                )
-        )
+            )
+
+        marker?.tag = truck
 
 
+    }
+
+    override fun onMarkerClick(p0: Marker): Boolean {
+       //tvSmallRating.setText()
+
+        cardView.isVisible = true
+        val truck = p0.tag as? FoodTruck
+
+        if (truck != null) {
+            smalltitle.setText(truck.companyName)
+        }
+        return true
     }
 
 }

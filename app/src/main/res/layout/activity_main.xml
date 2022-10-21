@@ -19,12 +19,14 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         />
+
         <androidx.cardview.widget.CardView
+            android:visibility="invisible"
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_margin="10dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             map:cardBackgroundColor="@color/white"
             map:cardCornerRadius="20dp"
             map:cardElevation="10dp"
@@ -36,19 +38,18 @@
             map:layout_constraintHorizontal_bias="0.49"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toTopOf="parent"
-            map:layout_constraintVertical_bias="1.0"
-            >
+            map:layout_constraintVertical_bias="1.0">
 
             <ImageView
                 android:id="@+id/iv_small_info"
-                android:scaleType="fitStart"
                 android:layout_width="150dp"
                 android:layout_height="200dp"
                 android:layout_gravity="left"
                 android:layout_margin="0dp"
+                android:alpha=".75"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/foodtrucks"
-                android:alpha=".75"/>
+                android:scaleType="fitStart"
+                android:src="@drawable/foodtrucks" />
 
             <TextView
                 android:id="@+id/tv_small_title"
@@ -77,11 +78,11 @@
                 android:id="@+id/tv_small_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#D86C6C"
                 android:layout_gravity="right|center_horizontal"
                 android:layout_marginTop="75dp"
                 android:layout_marginRight="80dp"
-                android:text="***** $$$" />
+                android:text="***** $$$"
+                android:textColor="#D86C6C" />
 
 
         </androidx.cardview.widget.CardView>
