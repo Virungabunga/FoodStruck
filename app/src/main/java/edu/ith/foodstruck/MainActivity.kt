@@ -1,14 +1,22 @@
 package edu.ith.foodstruck
 
 import FoodTruck
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
+
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -28,21 +36,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMainBinding
-    private lateinit var db:FirebaseFirestore
-    private lateinit var marker:Marker
+    private lateinit var db: FirebaseFirestore
     lateinit var toggle: ActionBarDrawerToggle
-    lateinit var tvSmallRating:TextView
-    lateinit var cardView:CardView
-    lateinit var smalltitle:TextView
+    lateinit var tvSmallRating: TextView
+    lateinit var cardView: CardView
+    lateinit var smalltitle: TextView
+    private val REQUEST_LOCATION = 1
+    lateinit var locationProvider: FusedLocationProviderClient
+    lateinit var locationCallback: LocationCallback
+    lateinit var locationRequest: LocationRequest
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       //var tvSmallInfo:TextView = findViewById(R.id.tv_small_title)
 
-        //cardView =findViewById(R.id.cardView)
-         db = Firebase.firestore
+
+        db = Firebase.firestore
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -51,11 +61,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        tvSmallRating =findViewById(R.id.tv_small_rating)
-        smalltitle=findViewById(R.id.tv_small_title)
-       cardView=findViewById(R.id.cardView)
+        tvSmallRating = findViewById(R.id.tv_small_rating)
+        smalltitle = findViewById(R.id.tv_small_title)
+        cardView = findViewById(R.id.cardView)
+
         binding.apply {
-            toggle = ActionBarDrawerToggle(this@MainActivity, drawerLayout, R.string.open, R.string.close)
+            toggle = ActionBarDrawerToggle(
+                this@MainActivity,
+                drawerLayout,
+                R.string.open,
+                R.string.close
+            )
             drawerLayout.addDrawerListener(toggle)
             toggle.syncState()
 
@@ -64,13 +80,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             navView.setNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.firstItem -> {
-                        Toast.makeText(this@MainActivity, "First Item Clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "First Item Clicked", Toast.LENGTH_SHORT)
+                            .show()
                     }
                     R.id.secondtItem -> {
-                        Toast.makeText(this@MainActivity, "Second Item Clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "Second Item Clicked", Toast.LENGTH_SHORT)
+                            .show()
                     }
                     R.id.thirdItem -> {
-                        Toast.makeText(this@MainActivity, "third Item Clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "third Item Clicked", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
                 true
@@ -78,37 +97,130 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
 
 
+        locationProvider = LocationServices.getFusedLocationProviderClient(this)
+        locationRequest = createLocationRequest()
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations) {
+
+
+                    addMyMarker( LatLng(location.latitude, location.longitude))
+                    Log.d("!!!","${location.latitude},${location.longitude}")
+
+                }
+            }
+        }
+
+
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION
+            )
+        }
+
 
     }
 
+    private fun addMyMarker(currentLatLong:LatLng) {
+        mMap.addMarker(
+            MarkerOptions().position(currentLatLong)
+        )
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, 12f))
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)){
+        if (toggle.onOptionsItemSelected(item)) {
             true
         }
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+
+    fun createLocationRequest(): LocationRequest =
+        LocationRequest.create().apply {
+            interval = 2000
+            fastestInterval = 1000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+
+    private fun stopLocationUpdates() {
+        locationProvider.removeLocationUpdates(locationCallback)
+    }
+
+
+    private fun startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.d("!!!", "startlocationUpdates")
+            locationProvider.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        }
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startLocationUpdates()
+            }
+
+        }
+    }
+
+
     override fun onMapReady(googleMap: GoogleMap) {
         readFromFirestore()
         mMap = googleMap
-        mMap.moveCamera(CameraUpdateFactory
-            .newLatLngZoom(
-                LatLng(
-                    59.33507323679574,
-                    18.067196534476423,
-                ),
-                10F,))
+        mMap.moveCamera(
+            CameraUpdateFactory
+                .newLatLngZoom(
+                    LatLng(
+                        59.33507323679574,
+                        18.067196534476423,
+                    ),
+                    10F,
+                )
+        )
 
-            googleMap.setOnMarkerClickListener(this)
-
-
+        googleMap.setOnMarkerClickListener(this)
 
 
     }
 
 
-
-    fun readFromFirestore(){
+    private fun readFromFirestore() {
         db.collection("FoodTruck")
             .get()
             .addOnSuccessListener { documentSnapshot ->
@@ -128,42 +240,45 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
             }
     }
-    fun addFoodTruck(){
-        var kosayFoodTruck = FoodTruck("Kosays fine dining",
+
+    fun addFoodTruck() {
+        var kosayFoodTruck = FoodTruck(
+            "Kosays fine dining",
             R.drawable.smallicon,
-            59.20570928820239, 17.818639780606336)
+            59.20570928820239, 17.818639780606336
+        )
 
         db.collection("FoodTruck")
             .add(kosayFoodTruck)
     }
-    fun addMarker(truck: FoodTruck) {//lat:Double,long :Double, title:String) {
 
+    private fun addMarker(truck: FoodTruck) {
 
+        val markerTruck = mMap.addMarker(
 
-            val marker = mMap.addMarker(
-
-                MarkerOptions().position(LatLng(truck.long!!, truck.lat!!))
-                    .title(truck.companyName)
-                    .icon(
-                        BitmapDescriptorFactory.fromResource(
-                            R.drawable.smallicon
-                        )
+            MarkerOptions().position(LatLng(truck.long!!, truck.lat!!))
+                .title(truck.companyName)
+                .icon(
+                    BitmapDescriptorFactory.fromResource(
+                        R.drawable.smallicon
                     )
-            )
+                )
+        )
 
-        marker?.tag = truck
+        markerTruck?.tag = truck
 
 
     }
 
+
     override fun onMarkerClick(p0: Marker): Boolean {
-       //tvSmallRating.setText()
+        //tvSmallRating.setText()
 
         cardView.isVisible = true
-        val truck = p0.tag as? FoodTruck
+        val truck: FoodTruck? = p0.tag as? FoodTruck
 
         if (truck != null) {
-            smalltitle.setText(truck.companyName)
+            smalltitle.text = truck.companyName
         }
         return true
     }
