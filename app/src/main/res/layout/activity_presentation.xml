@@ -6,4 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".PresentationActivity">
 
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/ivFoodtruck"
+        android:layout_width="346dp"
+        android:layout_height="284dp"
+        android:layout_marginBottom="9dp"
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toTopOf="@+id/tvPresentationTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/foodtrucks" />
+
+    <TextView
+        android:id="@+id/tvPresentationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:text="FOODTRUCK NAMN"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPresentationBread"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivFoodtruck" />
+
+    <TextView
+        android:id="@+id/tvPresentationBread"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        android:text="info om foodtruck"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPresentationTitle" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

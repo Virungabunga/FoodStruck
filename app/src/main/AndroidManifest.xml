@@ -4,7 +4,7 @@
     package="edu.ith.foodstruck">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodStruck"
         tools:targetApi="31">
+        <activity
+            android:name=".OwnerSignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:exported="false" />
         <activity
             android:name=".PresentationActivity"
             android:exported="false" />

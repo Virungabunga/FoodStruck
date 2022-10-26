@@ -2,6 +2,7 @@ package edu.ith.foodstruck
 
 import FoodTruck
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 
@@ -65,6 +66,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         smalltitle = findViewById(R.id.tv_small_title)
         cardView = findViewById(R.id.cardView)
 
+
+
         binding.apply {
             toggle = ActionBarDrawerToggle(
                 this@MainActivity,
@@ -88,8 +91,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                             .show()
                     }
                     R.id.thirdItem -> {
+
+                        var intent =Intent(this@MainActivity,OwnerSignUpActivity::class.java)
+                        startActivity(intent)
                         Toast.makeText(this@MainActivity, "third Item Clicked", Toast.LENGTH_SHORT)
                             .show()
+
                     }
                 }
                 true
@@ -279,6 +286,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         if (truck != null) {
             smalltitle.text = truck.companyName
+            cardView.setOnClickListener(){
+                val intent= Intent(this,PresentationActivity::class.java)
+                intent.putExtra("FOODTRUCK_ID",truck.documentId)
+                startActivity(intent)
+
+            }
         }
         return true
     }
