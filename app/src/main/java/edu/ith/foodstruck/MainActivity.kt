@@ -2,7 +2,9 @@ package edu.ith.foodstruck
 
 import FoodTruck
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 
 import android.os.Bundle
@@ -30,6 +32,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import edu.ith.foodstruck.databinding.ActivityMainBinding
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -48,8 +51,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
 
 
         db = Firebase.firestore
@@ -61,9 +67,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+
+
+
+
         tvSmallRating = findViewById(R.id.tv_small_rating)
         smalltitle = findViewById(R.id.tv_small_title)
         cardView = findViewById(R.id.cardView)
+
+
 
         binding.apply {
             toggle = ActionBarDrawerToggle(
@@ -84,12 +96,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                             .show()
                     }
                     R.id.secondtItem -> {
+
                         Toast.makeText(this@MainActivity, "Second Item Clicked", Toast.LENGTH_SHORT)
                             .show()
                     }
                     R.id.thirdItem -> {
-                        Toast.makeText(this@MainActivity, "third Item Clicked", Toast.LENGTH_SHORT)
+
+                        var intent =Intent(this@MainActivity,OwnerSignUpActivity::class.java)
+                        startActivity(intent)
+                        Toast.makeText(this@MainActivity, "taking you to the sign up/login", Toast.LENGTH_SHORT)
                             .show()
+
                     }
                 }
                 true
@@ -258,6 +275,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
             MarkerOptions().position(LatLng(truck.long!!, truck.lat!!))
                 .title(truck.companyName)
+
                 .icon(
                     BitmapDescriptorFactory.fromResource(
                         R.drawable.smallicon
@@ -272,16 +290,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
     override fun onMarkerClick(p0: Marker): Boolean {
-        //tvSmallRating.setText()
+
 
         cardView.isVisible = true
         val truck: FoodTruck? = p0.tag as? FoodTruck
 
         if (truck != null) {
             smalltitle.text = truck.companyName
+
+            cardView.setOnClickListener(){
+                val intent= Intent(this,PresentationActivity::class.java)
+                intent.putExtra("FOODTRUCK_ID",truck.documentId)
+                startActivity(intent)
+
+            }
         }
         return true
     }
+
+
+
+
 
 }
 

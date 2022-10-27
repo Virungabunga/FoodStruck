@@ -7,9 +7,9 @@
         android:title="First Item" />
     <item
         android:id="@+id/secondtItem"
-        android:title="Second Item" />
+        android:title="Foodtrucks" />
     <item
         android:id="@+id/thirdItem"
-        android:title="Third Item" />
+        android:title="Sign up/Login" />
 
 </menu>
