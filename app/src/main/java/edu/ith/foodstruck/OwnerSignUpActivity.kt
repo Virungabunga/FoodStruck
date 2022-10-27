@@ -36,6 +36,7 @@ class OwnerSignUpActivity : AppCompatActivity() {
         var signUpButton = findViewById<Button>(R.id.buttonSignUp)
         signUpButton.setOnClickListener() {
             createUser()
+
         }
     }
         private fun createUser() {
@@ -45,7 +46,10 @@ class OwnerSignUpActivity : AppCompatActivity() {
             if (!userName.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(userName).matches()) {
                 if (!userPassword.isEmpty()) {
                     firebaseAuth.createUserWithEmailAndPassword(userName,userPassword)
-
+                        .addOnSuccessListener {
+                            val intent=Intent(this,MainActivity::class.java)
+                            startActivity(intent)
+                        }
                 } else if (userPassword.isEmpty()) {
                     etSignUpPassword.setError("Empty fields are not allowed")
 

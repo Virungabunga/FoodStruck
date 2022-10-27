@@ -8,8 +8,8 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_width="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -20,55 +20,53 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/etFoodtruckName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="82dp"
+                android:layout_marginTop="99dp"
+                android:layout_marginEnd="119dp"
+                android:ems="10"
+                android:hint="Foodtruck Name"
+                android:inputType="textPersonName"
+                android:layout_marginLeft="70dp"/>
+
+            <EditText
+                android:id="@+id/etFoodtruckBread"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="34dp"
+                android:ems="10"
+                android:hint="Info"
+                android:inputType="textPersonName" />
+
+            <ImageView
+                android:id="@+id/ivUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="left"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tVuploadFromGallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="upload picture from gallery" />
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Save" />
+        </LinearLayout>
     </ScrollView>
 
-    <EditText
-        android:id="@+id/etFoodtruckName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="82dp"
-        android:layout_marginTop="99dp"
-        android:layout_marginEnd="119dp"
-        android:ems="10"
-        android:hint="Foodtruck Name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/etFoodtruckBread"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/etFoodtruckBread"
-        android:layout_width="match_parent"
-        android:layout_marginHorizontal="15dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="34dp"
-        android:ems="10"
-        android:hint="Info"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etFoodtruckName" />
-
-    <ImageView
-        android:id="@+id/ivUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:foregroundGravity="left"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etFoodtruckBread"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivUpload" />
 </androidx.constraintlayout.widget.ConstraintLayout>

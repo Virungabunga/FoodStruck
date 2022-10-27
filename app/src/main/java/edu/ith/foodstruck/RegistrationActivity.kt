@@ -6,21 +6,26 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 
 class RegistrationActivity : AppCompatActivity() {
     lateinit var etFoodtruckName : EditText
     lateinit var etFoodTruckBread : EditText
     lateinit var ivUpload : ImageView
+    lateinit var tVuploadFromGallery : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         etFoodtruckName=findViewById(R.id.etFoodtruckName)
         etFoodTruckBread=findViewById(R.id.etFoodtruckBread)
         ivUpload=findViewById(R.id.ivFoodtruck)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
+        tVuploadFromGallery.setOnClickListener(){
+
+        }
 
         var buttonSave =findViewById<Button>(R.id.buttonSave)
 
-        buttonSave.setOnClickListener(){
+        /*buttonSave.setOnClickListener(){
             var foodtruckName = etFoodtruckName.text.toString()
             var foodtruckBread = etFoodTruckBread.text.toString().toInt()
                     var truck =FoodTruck(
@@ -28,7 +33,7 @@ class RegistrationActivity : AppCompatActivity() {
                         ,
 
                     )
-        }
+        }*/
     }
 }
 
