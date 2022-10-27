@@ -4,6 +4,7 @@ import FoodTruck
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.location.Location
 
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -31,7 +33,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import edu.ith.foodstruck.databinding.ActivityMainBinding
+import java.io.File
+import java.util.ArrayList
 import java.util.*
 
 
@@ -44,11 +50,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     lateinit var tvSmallRating: TextView
     lateinit var cardView: CardView
     lateinit var smalltitle: TextView
+    lateinit var ivSmallInfo:ImageView
     private val REQUEST_LOCATION = 1
     lateinit var locationProvider: FusedLocationProviderClient
     lateinit var locationCallback: LocationCallback
     lateinit var locationRequest: LocationRequest
-
+    private lateinit var storageRef:StorageReference
 
 
 
@@ -66,6 +73,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
 
 
 
@@ -113,6 +121,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
         }
 
+        ivSmallInfo.setOnClickListener{
+            intentToPresentation()
+        }
 
         locationProvider = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = createLocationRequest()
@@ -127,7 +138,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 }
             }
         }
-
+        distanceToTruck(LatLng(59.33247492011825, 18.03127192565738))
 
 
         if (ActivityCompat.checkSelfPermission(
@@ -142,11 +153,57 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 REQUEST_LOCATION
             )
         }
+             
+
+    }
+
+
+    fun distanceToTruck(latLng: LatLng){
+        db.collection("FoodTruck")
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val foodTruckList = mutableListOf<FoodTruck>()
+
+                for (document in documentSnapshot.documents) {
+                    val truck = document.toObject<FoodTruck>()
+                    if (truck != null)
+                        foodTruckList.add(truck)
+
+                }
+
+                for (truck in foodTruckList) {
+                     val result = floatArrayOf(1.0F,1.0F,1.0F,1.0F,1.0F,1.0F,1.0F)
+
+                    Location.distanceBetween(latLng.latitude,latLng.longitude,truck.long!!,truck.lat!!,result)
+
+                    Log.d("!!!","${result.component1()}")
+
+                        
+
+                }
+
+
+            }
 
 
     }
 
-    private fun addMyMarker(currentLatLong:LatLng) {
+
+    private fun intentToPresentation(){
+        val intent=Intent(this,PresentationActivity::class.java)
+        startActivity(intent)
+    }
+    private fun readFromStorage (imageName:String) {
+
+        storageRef = FirebaseStorage.getInstance().reference.child("Images/$imageName.jpeg")
+        val localFile = File.createTempFile("tempImage", "jpeg")
+        storageRef.getFile(localFile).addOnSuccessListener {
+            val bitMap = BitmapFactory.decodeFile(localFile.absolutePath)
+            ivSmallInfo.setImageBitmap(bitMap)
+        }
+
+    }
+        private fun addMyMarker(currentLatLong:LatLng) {
         mMap.addMarker(
             MarkerOptions().position(currentLatLong)
         )
@@ -292,11 +349,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     override fun onMarkerClick(p0: Marker): Boolean {
 
 
-        cardView.isVisible = true
+        val imageName : String ="Foodtruck"
+      readFromStorage(imageName)
+
+            cardView.isVisible = true
         val truck: FoodTruck? = p0.tag as? FoodTruck
 
         if (truck != null) {
             smalltitle.text = truck.companyName
+
 
             cardView.setOnClickListener(){
                 val intent= Intent(this,PresentationActivity::class.java)
@@ -304,6 +365,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 startActivity(intent)
 
             }
+
         }
         return true
     }
