@@ -81,7 +81,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         tvSmallRating = findViewById(R.id.tv_small_rating)
         smalltitle = findViewById(R.id.tv_small_title)
-        cardView = findViewById(R.id.cardView)
+        cardView = findViewById(R.id.cardView  )
+        ivSmallInfo=findViewById(R.id.iv_small_info)
 
 
 
@@ -207,7 +208,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mMap.addMarker(
             MarkerOptions().position(currentLatLong)
         )
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, 12f))
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
