@@ -11,5 +11,8 @@
     <item
         android:id="@+id/thirdItem"
         android:title="Sign up/Login" />
+    <item
+        android:id="@+id/fourthItem"
+        android:title="Logout" />
 
 </menu>
