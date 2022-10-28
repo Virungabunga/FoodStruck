@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -29,6 +30,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.internal.NavigationMenu
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -56,17 +60,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     lateinit var locationCallback: LocationCallback
     lateinit var locationRequest: LocationRequest
     private lateinit var storageRef:StorageReference
+    private lateinit var auth: FirebaseAuth
+    private lateinit var loginView:TextView
+
+
+
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
-
-
-        db = Firebase.firestore
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -76,14 +80,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
 
+        auth = Firebase.auth
 
-
-
+        db = Firebase.firestore
         tvSmallRating = findViewById(R.id.tv_small_rating)
         smalltitle = findViewById(R.id.tv_small_title)
         cardView = findViewById(R.id.cardView  )
         ivSmallInfo=findViewById(R.id.iv_small_info)
+        loginView=findViewById(R.id.loginView)
 
+
+
+
+
+        displayUserID()
 
 
         binding.apply {
@@ -114,6 +124,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                         var intent =Intent(this@MainActivity,OwnerSignUpActivity::class.java)
                         startActivity(intent)
                         Toast.makeText(this@MainActivity, "taking you to the sign up/login", Toast.LENGTH_SHORT)
+                            .show()
+
+                    }
+                    R.id.fourthItem -> {
+
+                    singOut()
+                     Toast.makeText(this@MainActivity, "Signing out:(", Toast.LENGTH_SHORT)
                             .show()
 
                     }
@@ -156,6 +173,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
              
 
+
+
+    }
+
+
+    fun singOut(){
+       auth.signOut()
+        displayUserID()
+    }
+
+    fun displayUserID (){
+        if(auth.currentUser != null) {
+            Log.d("!!!!", "${auth.currentUser?.email}")
+            loginView.text="${auth.currentUser?.email}"
+            loginView.isVisible =true
+
+        }  else{ loginView.isVisible=false}
     }
 
 

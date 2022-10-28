@@ -86,6 +86,17 @@
 
 
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/loginView"
+            android:layout_width="64dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="TextView"
+            android:visibility="invisible"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.navigation.NavigationView
         android:backgroundTint="#FFFCC9"
