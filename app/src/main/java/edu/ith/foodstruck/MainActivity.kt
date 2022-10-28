@@ -81,7 +81,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
         auth = Firebase.auth
-
         db = Firebase.firestore
         tvSmallRating = findViewById(R.id.tv_small_rating)
         smalltitle = findViewById(R.id.tv_small_title)
@@ -94,8 +93,63 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
         displayUserID()
+        navMenu()
+        checkPermission()
+        gps()
 
 
+
+
+        ivSmallInfo.setOnClickListener{
+            intentToPresentation()
+        }
+
+
+
+
+
+    }
+
+    private fun gps(){
+
+                   locationProvider = LocationServices.getFusedLocationProviderClient(this)
+                   locationRequest = createLocationRequest()
+                   locationCallback = object : LocationCallback() {
+                       override fun onLocationResult(locationResult: LocationResult) {
+                           for (location in locationResult.locations) {
+
+
+                               addMyMarker( LatLng(location.latitude, location.longitude))
+                               Log.d("!!!","${location.latitude},${location.longitude}")
+
+                           }
+                       }
+                   }
+
+        distanceToTruck(LatLng(59.33247492011825, 18.03127192565738))
+
+    }
+
+    private fun checkPermission(){
+
+
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION
+            )
+        }
+
+    }
+
+    private fun navMenu(){
         binding.apply {
             toggle = ActionBarDrawerToggle(
                 this@MainActivity,
@@ -129,8 +183,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     }
                     R.id.fourthItem -> {
 
-                    singOut()
-                     Toast.makeText(this@MainActivity, "Signing out:(", Toast.LENGTH_SHORT)
+                        singOut()
+                        Toast.makeText(this@MainActivity, "Signing out:(", Toast.LENGTH_SHORT)
                             .show()
 
                     }
@@ -138,52 +192,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 true
             }
         }
-
-        ivSmallInfo.setOnClickListener{
-            intentToPresentation()
-        }
-
-        locationProvider = LocationServices.getFusedLocationProviderClient(this)
-        locationRequest = createLocationRequest()
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                for (location in locationResult.locations) {
-
-
-                    addMyMarker( LatLng(location.latitude, location.longitude))
-                    Log.d("!!!","${location.latitude},${location.longitude}")
-
-                }
-            }
-        }
-        distanceToTruck(LatLng(59.33247492011825, 18.03127192565738))
-
-
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_LOCATION
-            )
-        }
-             
-
-
-
     }
 
 
-    fun singOut(){
+    private fun singOut(){
        auth.signOut()
         displayUserID()
     }
 
-    fun displayUserID (){
+    private fun displayUserID (){
         if(auth.currentUser != null) {
             Log.d("!!!!", "${auth.currentUser?.email}")
             loginView.text="${auth.currentUser?.email}"
@@ -193,7 +210,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
 
-    fun distanceToTruck(latLng: LatLng){
+    private fun distanceToTruck(latLng: LatLng){
         db.collection("FoodTruck")
             .get()
             .addOnSuccessListener { documentSnapshot ->
