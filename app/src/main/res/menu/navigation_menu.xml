@@ -14,5 +14,8 @@
     <item
         android:id="@+id/fourthItem"
         android:title="Logout" />
+    <item
+        android:id="@+id/fifthItem"
+        android:title="Register Truck" />
 
 </menu>

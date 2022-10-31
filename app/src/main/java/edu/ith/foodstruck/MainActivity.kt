@@ -185,6 +185,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                             .show()
 
                     }
+                    R.id.fifthItem -> {
+                        var intent =Intent(this@MainActivity,RegistrationActivity::class.java)
+                        startActivity(intent)
+
+                        Toast.makeText(this@MainActivity, "Register", Toast.LENGTH_SHORT)
+                            .show()
+
+                    }
                 }
                 true
             }
