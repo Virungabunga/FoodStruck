@@ -13,6 +13,8 @@ class RegistrationActivity : AppCompatActivity() {
     lateinit var etFoodTruckBread : EditText
     lateinit var ivUpload : ImageView
     lateinit var tVuploadFromGallery : TextView
+    lateinit var etLatitude : EditText
+    lateinit var etLongitude : EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         etFoodtruckName=findViewById(R.id.etFoodtruckName)
         etFoodTruckBread=findViewById(R.id.etFoodtruckBread)
@@ -25,28 +27,44 @@ class RegistrationActivity : AppCompatActivity() {
 
         var buttonSave =findViewById<Button>(R.id.buttonSave)
 
-        /*buttonSave.setOnClickListener(){
+        buttonSave.setOnClickListener(){
             var foodtruckName = etFoodtruckName.text.toString()
-            var foodtruckBread = etFoodTruckBread.text.toString().toInt()
+            var foodtruckBread = etFoodTruckBread.text.toString()
+            var latitude = etLatitude.text.toString().toDouble()
+            var longitude = etLongitude.text.toString().toDouble()
                     var truck =FoodTruck(
                         foodtruckName,
-                        ,
+                        foodtruckBread,
+                        R.drawable.smallicon,
+                        longitude,
+                        latitude,
+
+
+
+
+
+
 
                     )
-        }*/
+        }
     }
 }
 
 
 
-/*
-fun addFoodTruck() {
+
+fun addFoodTruck(var name : String,
+                 var info : String,
+                 var picId : Int,
+                 var lat : Double,
+                 var long: Double) {
     var kosayFoodTruck = FoodTruck(
         "Kosays fine dining",
+        "Vi startade 1995",
         R.drawable.smallicon,
         59.20570928820239, 17.818639780606336
     )
 
     db.collection("FoodTruck")
         .add(kosayFoodTruck)
-}*/
+}

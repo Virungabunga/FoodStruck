@@ -64,10 +64,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var loginView:TextView
 
 
-
-
-
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -370,6 +367,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     fun addFoodTruck() {
         var kosayFoodTruck = FoodTruck(
             "Kosays fine dining",
+            "vi startde 1995",
             R.drawable.smallicon,
             59.20570928820239, 17.818639780606336
         )
