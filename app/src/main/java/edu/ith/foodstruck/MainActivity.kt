@@ -21,6 +21,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -31,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.internal.NavigationMenu
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -62,7 +66,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var storageRef:StorageReference
     private lateinit var auth: FirebaseAuth
     private lateinit var loginView:TextView
-
+    private lateinit var navMenu:NavigationView
 
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +80,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mapFragment.getMapAsync(this)
 
 
+       navMenu = findViewById(R.id.navView)
 
         auth = Firebase.auth
         db = Firebase.firestore
@@ -106,6 +111,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
     }
+
 
     private fun gps(){
 
@@ -210,8 +216,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             Log.d("!!!!", "${auth.currentUser?.email}")
             loginView.text="${auth.currentUser?.email}"
             loginView.isVisible =true
+            navMenu.menu.findItem(R.id.fourthItem).isVisible=true
+            navMenu.menu.findItem(R.id.fifthItem).isVisible=true
 
-        }  else{ loginView.isVisible=false}
+
+
+        }  else {
+            loginView.isVisible=false
+            navMenu.menu.findItem(R.id.fourthItem).isVisible=false
+            navMenu.menu.findItem(R.id.fifthItem).isVisible=false
+        }
     }
 
 
@@ -370,18 +384,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 }
 
             }
-    }
-
-    fun addFoodTruck() {
-        var kosayFoodTruck = FoodTruck(
-            "Kosays fine dining",
-            "vi startde 1995",
-            R.drawable.smallicon,
-            59.20570928820239, 17.818639780606336
-        )
-
-        db.collection("FoodTruck")
-            .add(kosayFoodTruck)
     }
 
     private fun addMarker(truck: FoodTruck) {
