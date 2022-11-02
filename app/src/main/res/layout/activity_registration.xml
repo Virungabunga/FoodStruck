@@ -44,22 +44,6 @@
                 android:hint="Info"
                 android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/etLatitude"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="latitude:"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/etLongitude"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="longitude"
-                android:inputType="textPersonName" />
-
             <ImageView
                 android:id="@+id/ivUpload"
                 android:layout_width="wrap_content"
