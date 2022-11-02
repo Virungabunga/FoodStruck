@@ -85,6 +85,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         loginView=findViewById(R.id.loginView)
 
 
+
+        signInAnonymously()
         updateUI()
         navMenu()
         gps()
@@ -94,7 +96,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             intentToPresentation()
         }
     }
-
+    private fun signInAnonymously(){
+        if(auth.currentUser==null){
+            auth.signInAnonymously()
+        }
+    }
     private fun drawMarker(){
 
         mMap.setOnMapClickListener {  pos ->
@@ -213,11 +219,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private fun updateUI (){
         if(auth.currentUser != null) {
+            if(auth.currentUser?.isAnonymous==true){
+                navMenu.menu.findItem(R.id.fifthItem).isVisible=false
+            }else {navMenu.menu.findItem(R.id.fifthItem).isVisible=true
+
+            }
             Log.d("!!!!", "${auth.currentUser?.email}")
             loginView.text="${auth.currentUser?.email}"
             loginView.isVisible =true
             navMenu.menu.findItem(R.id.fourthItem).isVisible=true
-            navMenu.menu.findItem(R.id.fifthItem).isVisible=true
+
 
 
 
@@ -348,9 +359,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 private fun savePosFoodTruck(lat:Double,long: Double) {
 
 
-
-
-    db.collection("FoodTruck").document(auth.currentUser?.uid!!)
+db.collection("FoodTruck").document(auth.currentUser?.uid!!)
         .update(mapOf(
             "lat" to lat,
             "long" to long

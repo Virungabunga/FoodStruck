@@ -54,6 +54,12 @@
                 tools:srcCompat="@tools:sample/avatars" />
 
             <Button
+                android:id="@+id/btPlaceFoodtruck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="place foodtruck on map" />
+
+            <Button
                 android:id="@+id/btnSelectImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

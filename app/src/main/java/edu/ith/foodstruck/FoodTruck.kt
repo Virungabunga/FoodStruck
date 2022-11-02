@@ -7,6 +7,6 @@ data class FoodTruck (var companyName: String? = null,
                       var long : Double? = null,
                       var lat : Double?=null,
                       var userID :String?=null,
-                      var userPicID:Uri?=null,
+                      var userPicID:String?=null,
                       @DocumentId var documentId: String? = null ) {}
 
