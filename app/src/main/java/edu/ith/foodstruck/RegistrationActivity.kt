@@ -89,23 +89,27 @@ class RegistrationActivity : AppCompatActivity() {
     fun uploadImage(context: Context, imageFileUri: Uri) {
         val mStorageRef = FirebaseStorage.getInstance().reference
 
-        val uploadTask =
-            mStorageRef.child("images/${auth.currentUser?.uid}.png").putFile(imageFileUri)
+        val ref = mStorageRef.child("images/${auth.currentUser?.uid}.png")
 
-        uploadTask.addOnSuccessListener {
-            mStorageRef.child("images/\${auth.currentUser?.uid}.png)").downloadUrl
-                .addOnSuccessListener { uri ->
-
-                    Log.d("!!!", uri.toString())
-                    addFoodTruck(uri)
-
+        val uploadTask = ref.putFile(imageFileUri)
+        uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
                 }
-
+            }
+            ref.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downloadUri = task.result
+                addFoodTruck(downloadUri)
+            } else {
+                // Handle failures
+                // ...
+            }
         }
+
     }
-
-
-
     fun addFoodTruck(uploadUrl:Uri) {
 
         val foodtruckName = etFoodtruckName.text.toString()
