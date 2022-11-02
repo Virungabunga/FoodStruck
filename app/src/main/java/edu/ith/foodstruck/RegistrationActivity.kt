@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,11 +30,16 @@ class RegistrationActivity : AppCompatActivity() {
     lateinit var buttonSave: Button
     lateinit var btnSelectImage:Button
     lateinit var auth:FirebaseAuth
+    val placeFoodTruck = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+       latLong = it.data?.getParcelableExtra("LAT_LONG",)
+        Log.d("RegistrationActivity","${it.data?.getParcelableExtra<LatLng>("LAT_LONG")}")
+    }
+    var latLong : LatLng? = null
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
-
+        var btPlaceFoodtruck = findViewById<Button>(R.id.btPlaceFoodtruck)
         etFoodtruckName = findViewById(R.id.etFoodtruckName)
         etFoodTruckBread = findViewById(R.id.etFoodtruckBread)
         db = Firebase.firestore
@@ -42,7 +49,15 @@ class RegistrationActivity : AppCompatActivity() {
         auth=Firebase.auth
         buttonsPressed()
 
+        btPlaceFoodtruck.setOnClickListener(){
+            val intent = Intent(this,PlaceFoodtruckActivity::class.java)
+        placeFoodTruck.launch(intent)
+        }
+
+
+
     }
+
 
     fun buttonsPressed(){
 
@@ -101,7 +116,7 @@ class RegistrationActivity : AppCompatActivity() {
             ref.downloadUrl
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val downloadUri = task.result
+                val downloadUri = task.result.toString()
                 addFoodTruck(downloadUri)
             } else {
                 // Handle failures
@@ -110,7 +125,7 @@ class RegistrationActivity : AppCompatActivity() {
         }
 
     }
-    fun addFoodTruck(uploadUrl:Uri) {
+    fun addFoodTruck(uploadUrl:String) {
 
         val foodtruckName = etFoodtruckName.text.toString()
         val foodtruckBread = etFoodTruckBread.text.toString()
@@ -119,8 +134,8 @@ class RegistrationActivity : AppCompatActivity() {
         val truck = FoodTruck(
             foodtruckName,
             foodtruckBread,
-            R.drawable.smallicon, 59.0,
-           19.0 ,
+            R.drawable.smallicon, latLong?.longitude,
+           latLong?.latitude ,
             userID = auth.currentUser?.uid,
             uploadUrl
 
