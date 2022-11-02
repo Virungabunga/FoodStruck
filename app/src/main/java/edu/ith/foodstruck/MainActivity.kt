@@ -1,10 +1,10 @@
 package edu.ith.foodstruck
 
 import FoodTruck
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.icu.text.Transliterator
 import android.location.Geocoder
 import android.location.Location
 
@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -30,9 +29,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.internal.NavigationMenu
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldPath.documentId
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -41,7 +41,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import edu.ith.foodstruck.databinding.ActivityMainBinding
 import java.io.File
-import java.util.ArrayList
 import java.util.*
 
 
@@ -62,11 +61,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var storageRef:StorageReference
     private lateinit var auth: FirebaseAuth
     private lateinit var loginView:TextView
-
-
-    
+    private lateinit var navMenu:NavigationView
+    private var myPos :LatLng =LatLng(59.0,18.0)
+    var currentMarker :Marker?=null
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -76,6 +74,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mapFragment.getMapAsync(this)
 
 
+       navMenu = findViewById(R.id.navView)
 
         auth = Firebase.auth
         db = Firebase.firestore
@@ -86,49 +85,56 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         loginView=findViewById(R.id.loginView)
 
 
-
-
-
-        displayUserID()
+        updateUI()
         navMenu()
-        checkPermission()
         gps()
-
-
-
+        checkPermission()
 
         ivSmallInfo.setOnClickListener{
             intentToPresentation()
         }
+    }
 
+    private fun drawMarker(){
 
+        mMap.setOnMapClickListener {  pos ->
 
+            if (currentMarker!=null){
 
+                currentMarker?.remove()
+            }
+                val myMarker= MarkerOptions().position(LatLng(pos.latitude,pos.longitude))
+              savePosFoodTruck(pos.latitude,pos.longitude)
+                currentMarker = mMap.addMarker(myMarker.title("Im here"))
+        }
+    }
+
+    private fun getAdress(lat:Double,long:Double) :String? {
+        val geocoder =Geocoder(this, Locale.getDefault())
+       val adress = geocoder.getFromLocation(lat,long,1)
+        return adress[0].getAddressLine(0).toString()
 
     }
 
-    private fun gps(){
-
-                   locationProvider = LocationServices.getFusedLocationProviderClient(this)
-                   locationRequest = createLocationRequest()
-                   locationCallback = object : LocationCallback() {
-                       override fun onLocationResult(locationResult: LocationResult) {
-                           for (location in locationResult.locations) {
+    private fun gps() {
 
 
-                               addMyMarker( LatLng(location.latitude, location.longitude))
-                               Log.d("!!!","${location.latitude},${location.longitude}")
+        locationProvider = LocationServices.getFusedLocationProviderClient(this)
+        locationRequest = createLocationRequest()
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                myPos=LatLng(locationResult.lastLocation.latitude,locationResult.lastLocation.longitude)
+                for (location in locationResult.locations) {
 
-                           }
-                       }
-                   }
+                    //drawMarker(LatLng(location.latitude,location.longitude))
+                   //addMyMarker( LatLng(location.latitude, location.longitude))
 
-        distanceToTruck(LatLng(59.33247492011825, 18.03127192565738))
-
+               }
+           }
+       }
     }
 
-    private fun checkPermission(){
-
+    private fun checkPermission() {
 
 
         if (ActivityCompat.checkSelfPermission(
@@ -172,7 +178,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     }
                     R.id.thirdItem -> {
 
-                        var intent =Intent(this@MainActivity,OwnerSignUpActivity::class.java)
+                        var intent =Intent(this@MainActivity,OwnerLoginActivity::class.java)
                         startActivity(intent)
                         Toast.makeText(this@MainActivity, "taking you to the sign up/login", Toast.LENGTH_SHORT)
                             .show()
@@ -202,47 +208,36 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private fun singOut(){
        auth.signOut()
-        displayUserID()
+        updateUI()
     }
 
-    private fun displayUserID (){
+    private fun updateUI (){
         if(auth.currentUser != null) {
             Log.d("!!!!", "${auth.currentUser?.email}")
             loginView.text="${auth.currentUser?.email}"
             loginView.isVisible =true
+            navMenu.menu.findItem(R.id.fourthItem).isVisible=true
+            navMenu.menu.findItem(R.id.fifthItem).isVisible=true
 
-        }  else{ loginView.isVisible=false}
+
+
+        }  else {
+            loginView.isVisible=false
+            navMenu.menu.findItem(R.id.fourthItem).isVisible=false
+            navMenu.menu.findItem(R.id.fifthItem).isVisible=false
+        }
     }
 
 
-    private fun distanceToTruck(latLng: LatLng){
-        db.collection("FoodTruck")
-            .get()
-            .addOnSuccessListener { documentSnapshot ->
-                val foodTruckList = mutableListOf<FoodTruck>()
-
-                for (document in documentSnapshot.documents) {
-                    val truck = document.toObject<FoodTruck>()
-                    if (truck != null)
-                        foodTruckList.add(truck)
-
-                }
-
-                for (truck in foodTruckList) {
-                     val result = floatArrayOf(1.0F,1.0F,1.0F,1.0F,1.0F,1.0F,1.0F)
-
-                    Location.distanceBetween(latLng.latitude,latLng.longitude,truck.long!!,truck.lat!!,result)
-
-                    Log.d("!!!","${result.component1()}")
-
-                        
-
-                }
 
 
-            }
+    private fun distanceToTruck(truck: FoodTruck): Float {
+        val result = FloatArray(2)
 
 
+
+        Location.distanceBetween(myPos.latitude, myPos.longitude,truck.lat!! ,truck.long!! , result)
+        return result[0]
     }
 
 
@@ -344,13 +339,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     10F,
                 )
         )
-
+        drawMarker()
         googleMap.setOnMarkerClickListener(this)
 
 
     }
 
+private fun savePosFoodTruck(lat:Double,long: Double) {
 
+
+
+
+    db.collection("FoodTruck").document(auth.currentUser?.uid!!)
+        .update(mapOf(
+            "lat" to lat,
+            "long" to long
+        ))
+
+}
     private fun readFromFirestore() {
         db.collection("FoodTruck")
             .get()
@@ -372,23 +378,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
     }
 
-    fun addFoodTruck() {
-        var kosayFoodTruck = FoodTruck(
-            "Kosays fine dining",
-            "vi startde 1995",
-            R.drawable.smallicon,
-            59.20570928820239, 17.818639780606336
-        )
-
-        db.collection("FoodTruck")
-            .add(kosayFoodTruck)
-    }
-
     private fun addMarker(truck: FoodTruck) {
 
         val markerTruck = mMap.addMarker(
 
-            MarkerOptions().position(LatLng(truck.long!!, truck.lat!!))
+            MarkerOptions().position(LatLng(truck.lat!!, truck.long!!))
                 .title(truck.companyName)
 
                 .icon(
@@ -397,24 +391,32 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     )
                 )
         )
-
         markerTruck?.tag = truck
+    }
 
+    fun updateCardUI(truck : FoodTruck) {
+        smalltitle.text = truck.companyName
+        // set pic
+        // set price
+
+         cardView.isVisible = true
+        val dist = distanceToTruck(truck)
+        tvSmallRating.text=dist.toString()
 
     }
 
 
     override fun onMarkerClick(p0: Marker): Boolean {
-
-
         val imageName : String ="Foodtruck"
-      readFromStorage(imageName)
+        readFromStorage(imageName)
 
-            cardView.isVisible = true
+
         val truck: FoodTruck? = p0.tag as? FoodTruck
 
         if (truck != null) {
-            smalltitle.text = truck.companyName
+
+
+            updateCardUI(truck)
 
 
             cardView.setOnClickListener(){
@@ -423,15 +425,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 startActivity(intent)
 
             }
-
         }
         return true
     }
-
-
-
-
-
 }
 
 

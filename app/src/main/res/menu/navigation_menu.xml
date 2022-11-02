@@ -13,9 +13,11 @@
         android:title="Sign up/Login" />
     <item
         android:id="@+id/fourthItem"
-        android:title="Logout" />
+        android:title="Logout"
+        android:visible="false" />
     <item
         android:id="@+id/fifthItem"
-        android:title="Register Truck" />
+        android:title="Register Truck"
+        android:visible="false" />
 
 </menu>
