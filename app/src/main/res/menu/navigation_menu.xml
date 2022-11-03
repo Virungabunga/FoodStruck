@@ -4,10 +4,10 @@
 
     <item
         android:id="@+id/firstItem"
-        android:title="First Item" />
+        android:title="Favorites" />
     <item
         android:id="@+id/secondtItem"
-        android:title="Foodtrucks" />
+        android:title="All FoodTrucks" />
     <item
         android:id="@+id/thirdItem"
         android:title="Sign up/Login" />

@@ -10,7 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.squareup.picasso.Picasso
+
 
 class PresentationActivity : AppCompatActivity() {
     lateinit var ivFoodtruck : ImageView
@@ -25,18 +25,24 @@ class PresentationActivity : AppCompatActivity() {
         tvPresentationTitle = findViewById(R.id.tvPresentationTitle)
         tvPresentationBread = findViewById(R.id.tvPresentationBread)
         db =Firebase.firestore
-        var foodtruckDocumentId = intent.getStringExtra("FOODTRUCK_ID")!!
 
-        db.collection("FoodTruck")
-            .document(foodtruckDocumentId)
-            .get()
-            .addOnSuccessListener {documentSnapshot ->
-                val truck = documentSnapshot.toObject<FoodTruck>()
-                tvPresentationTitle.text=truck?.companyName
-                tvPresentationBread.text=truck?.info
+        val foodTruckDocumentId = intent.getStringExtra("FoodTruckId")
+
+        if (foodTruckDocumentId != null) {
+            db.collection("FoodTruck")
+                .document(foodTruckDocumentId)
+                .get()
+                .addOnSuccessListener {documentSnapshot ->
+                    val truck = documentSnapshot.toObject<FoodTruck>()
+                    if (truck!=null){
+
+                        tvPresentationTitle.text=truck.companyName
+                        tvPresentationBread.text=truck.info
+                    }
 
 
-            /*Picasso.get().load(truck?.smallPicId!!).into(ivFoodtruck)*/
-            }
+
+                }
+        }
     }
 }
