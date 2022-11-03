@@ -1,15 +1,20 @@
 package edu.ith.foodstruck
 
 import FoodTruck
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import java.io.File
 
 
 class PresentationActivity : AppCompatActivity() {
@@ -26,6 +31,7 @@ class PresentationActivity : AppCompatActivity() {
         tvPresentationBread = findViewById(R.id.tvPresentationBread)
         db =Firebase.firestore
 
+
         val foodTruckDocumentId = intent.getStringExtra("FoodTruckId")
 
         if (foodTruckDocumentId != null) {
@@ -38,11 +44,10 @@ class PresentationActivity : AppCompatActivity() {
 
                         tvPresentationTitle.text=truck.companyName
                         tvPresentationBread.text=truck.info
+                         Glide.with(this).load(truck?.userPicID).into(ivFoodtruck)
                     }
 
 
 
                 }
         }
-    }
-}
