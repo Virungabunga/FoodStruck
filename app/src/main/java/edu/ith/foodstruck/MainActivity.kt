@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -174,11 +175,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             navView.setNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.firstItem -> {
+
                         Toast.makeText(this@MainActivity, "First Item Clicked", Toast.LENGTH_SHORT)
                             .show()
                     }
                     R.id.secondtItem -> {
-
+                        val intent = Intent(this@MainActivity,FoodtruckListActivity::class.java)
+                        startActivity(intent)
                         Toast.makeText(this@MainActivity, "Second Item Clicked", Toast.LENGTH_SHORT)
                             .show()
                     }
@@ -411,6 +414,7 @@ db.collection("FoodTruck").document(auth.currentUser?.uid!!)
          cardView.isVisible = true
         val dist = distanceToTruck(truck)
         tvSmallRating.text=dist.toString()
+        Glide.with(this).load(truck.userPicID).into(ivSmallInfo)
 
     }
 

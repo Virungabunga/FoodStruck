@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/firstItem"
-        android:title="First Item" />
+        android:title="Favorites" />
     <item
         android:id="@+id/secondtItem"
         android:title="Foodtrucks" />
