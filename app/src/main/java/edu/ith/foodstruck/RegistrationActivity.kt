@@ -20,7 +20,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
-private lateinit var mProgressDialog: ProgressDialog
+
 class RegistrationActivity : AppCompatActivity() {
     lateinit var etFoodtruckName: EditText
     lateinit var etFoodTruckBread: EditText
