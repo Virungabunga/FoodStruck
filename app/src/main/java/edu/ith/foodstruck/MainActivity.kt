@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     fun uploadFavorites(foodTruck: FoodTruck,userId:String){
 
         db.collection("users").document(userId).collection("favorites")
-            .add(foodTruck)
+            .document(foodTruck.documentId!!).set(foodTruck)
             .addOnSuccessListener {
                 Toast.makeText(this, "Saved to Favorites", Toast.LENGTH_SHORT).show()
             }
