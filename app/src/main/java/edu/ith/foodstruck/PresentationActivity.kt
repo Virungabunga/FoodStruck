@@ -18,9 +18,9 @@ import java.io.File
 
 
 class PresentationActivity : AppCompatActivity() {
-    lateinit var ivFoodtruck : ImageView
-    lateinit var tvPresentationTitle : TextView
-    lateinit var tvPresentationBread :TextView
+    lateinit var ivFoodtruck: ImageView
+    lateinit var tvPresentationTitle: TextView
+    lateinit var tvPresentationBread: TextView
     private lateinit var db: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -29,7 +29,7 @@ class PresentationActivity : AppCompatActivity() {
         ivFoodtruck = findViewById(R.id.ivFoodtruck)
         tvPresentationTitle = findViewById(R.id.tvPresentationTitle)
         tvPresentationBread = findViewById(R.id.tvPresentationBread)
-        db =Firebase.firestore
+        db = Firebase.firestore
 
 
         val foodTruckDocumentId = intent.getStringExtra("FoodTruckId")
@@ -38,16 +38,17 @@ class PresentationActivity : AppCompatActivity() {
             db.collection("FoodTruck")
                 .document(foodTruckDocumentId)
                 .get()
-                .addOnSuccessListener {documentSnapshot ->
+                .addOnSuccessListener { documentSnapshot ->
                     val truck = documentSnapshot.toObject<FoodTruck>()
-                    if (truck!=null){
+                    if (truck != null) {
 
-                        tvPresentationTitle.text=truck.companyName
-                        tvPresentationBread.text=truck.info
-                         Glide.with(this).load(truck?.userPicID).into(ivFoodtruck)
+                        tvPresentationTitle.text = truck.companyName
+                        tvPresentationBread.text = truck.info
+                        Glide.with(this).load(truck?.userPicID).into(ivFoodtruck)
                     }
-
 
 
                 }
         }
+    }
+}
