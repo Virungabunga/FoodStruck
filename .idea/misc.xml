@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/circle.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/img.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/splash_image.xml" value="0.1315" />
         <entry key="app/src/main/res/layout/activity_favorites.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_foodtruck_list.xml" value="0.1" />
@@ -13,8 +15,12 @@
         <entry key="app/src/main/res/layout/activity_owner_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_owner_sign_up.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_presentation.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_registration.xml" value="0.19753086419753085" />
-        <entry key="app/src/main/res/layout/card_view_small_info.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_registration.xml" value="0.14084507042253522" />
+        <entry key="app/src/main/res/layout/card_view_small_info.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/foodtruck_item.xml" value="0.2857142857142857" />
+        <entry key="app/src/main/res/layout/foodtruck_items.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/foodtruck_list.xml" value="0.19519927536231885" />
+        <entry key="app/src/main/res/layout/info_window.xml" value="0.43428344726562507" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.1" />
         <entry key="app/src/main/res/layout/splash_screen.xml" value="0.1" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.24806201550387597" />

@@ -42,11 +42,15 @@ class PresentationActivity : AppCompatActivity() {
 
                         tvPresentationTitle.text = truck.companyName
                         tvPresentationBread.text = truck.info
+                        Glide.with(this).load(truck?.userPicID).into(ivFoodtruck)
+                    }
+                        tvPresentationTitle.text = truck.companyName
+                        tvPresentationBread.text = truck.info
                         Glide.with(this).load(truck.userPicID).into(ivFoodtruck)
                     }
-
 
                 }
         }
     }
+
 }
