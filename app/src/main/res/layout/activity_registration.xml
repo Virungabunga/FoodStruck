@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistrationActivity">
+    tools:context=".RegistrationActivity"
+    android:background="#EAD59F">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -27,12 +28,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="82dp"
+                android:layout_marginLeft="70dp"
                 android:layout_marginTop="99dp"
                 android:layout_marginEnd="119dp"
                 android:ems="10"
                 android:hint="Foodtruck Name"
                 android:inputType="textPersonName"
-                android:layout_marginLeft="70dp"/>
+                android:textColor="#F8F5F5"
+                android:textColorHint="#FFFFFF" />
 
             <EditText
                 android:id="@+id/etFoodtruckBread"
@@ -42,7 +45,8 @@
                 android:layout_marginTop="34dp"
                 android:ems="10"
                 android:hint="Info"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColorHint="#F6F5F5" />
 
             <ImageView
                 android:id="@+id/ivUpload"
@@ -55,23 +59,30 @@
 
             <Button
                 android:id="@+id/btPlaceFoodtruck"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="place foodtruck on map" />
+                android:layout_gravity="center"
+                android:shadowRadius="10"
+                android:text="place foodtruck on map"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/btnSelectImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Button" />
+                android:shadowRadius="20"
+                android:text="upload picture"
+                app:cornerRadius="15dp" />
 
             <Button
                 android:id="@+id/buttonSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Save" />
+                android:shadowRadius="20"
+                android:text="Save"
+                app:cornerRadius="15dp" />
         </LinearLayout>
     </ScrollView>
 
