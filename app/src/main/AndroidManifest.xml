@@ -17,6 +17,9 @@
         android:theme="@style/Theme.FoodStruck"
         tools:targetApi="31">
         <activity
+            android:name=".FavoritesActivity"
+            android:exported="false" />
+        <activity
             android:name=".FoodtruckListActivity"
             android:exported="false" />
         <activity

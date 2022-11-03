@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var navMenu:NavigationView
     private lateinit var addView: ImageView
     private var myPos :LatLng =LatLng(59.0,18.0)
-    var favoList = mutableListOf<FoodTruck>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -92,22 +92,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     }
 
-    fun loadFavorites(userId: String){
-        db.collection("Favorites").document().collection(userId)
-            .get()
-            .addOnSuccessListener {  snapshot ->
-                val favoList = mutableListOf<FoodTruck>()
 
-                for (document in snapshot.documents) {
-                    val truck = document.toObject<FoodTruck>()
-                    if (truck != null)
-                        favoList.add(truck)
-                        Log.d("!!!","${favoList[0].companyName}")
-                }
-
-            }
-
-    }
 
     private fun addToFavorites(truck: FoodTruck) {
 
@@ -184,8 +169,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 when (it.itemId) {
                     R.id.firstItem -> {
 
-                        Toast.makeText(this@MainActivity, "First Item Clicked", Toast.LENGTH_SHORT)
-                            .show()
+                        val intent =Intent(this@MainActivity,FavoritesActivity::class.java)
+                        startActivity(intent)
                     }
                     R.id.secondtItem -> {
                         val intent = Intent(this@MainActivity,FoodtruckListActivity::class.java)

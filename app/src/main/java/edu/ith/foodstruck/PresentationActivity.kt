@@ -12,9 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.squareup.picasso.Picasso
-import java.io.File
 
 
 class PresentationActivity : AppCompatActivity() {
@@ -32,7 +29,7 @@ class PresentationActivity : AppCompatActivity() {
         db = Firebase.firestore
 
 
-        val foodTruckDocumentId = intent.getStringExtra("FoodTruckId")
+        val foodTruckDocumentId = intent.getStringExtra("FoodTruckID")
 
         if (foodTruckDocumentId != null) {
             db.collection("FoodTruck")
@@ -40,15 +37,20 @@ class PresentationActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
                     val truck = documentSnapshot.toObject<FoodTruck>()
+
                     if (truck != null) {
 
                         tvPresentationTitle.text = truck.companyName
                         tvPresentationBread.text = truck.info
                         Glide.with(this).load(truck?.userPicID).into(ivFoodtruck)
                     }
-
+                        tvPresentationTitle.text = truck.companyName
+                        tvPresentationBread.text = truck.info
+                        Glide.with(this).load(truck.userPicID).into(ivFoodtruck)
+                    }
 
                 }
         }
     }
+
 }
