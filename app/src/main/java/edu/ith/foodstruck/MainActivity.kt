@@ -3,11 +3,7 @@ package edu.ith.foodstruck
 import FoodTruck
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
-import android.icu.text.Transliterator
-import android.location.Geocoder
 import android.location.Location
-
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -33,16 +29,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FieldPath.documentId
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import edu.ith.foodstruck.databinding.ActivityMainBinding
-import java.io.File
-import java.util.*
 import kotlin.math.roundToInt
 
 
@@ -60,11 +51,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     lateinit var locationProvider: FusedLocationProviderClient
     lateinit var locationCallback: LocationCallback
     lateinit var locationRequest: LocationRequest
-    private lateinit var storageRef:StorageReference
     private lateinit var auth: FirebaseAuth
     private lateinit var loginView:TextView
     private lateinit var navMenu:NavigationView
+    private lateinit var addView: ImageView
     private var myPos :LatLng =LatLng(59.0,18.0)
+    var favoList = mutableListOf<FoodTruck>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -84,6 +76,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         cardView = findViewById(R.id.cardView  )
         ivSmallInfo=findViewById(R.id.iv_small_info)
         loginView=findViewById(R.id.loginView)
+        addView=findViewById(R.id.addView)
 
 
 
@@ -96,6 +89,40 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         ivSmallInfo.setOnClickListener{
             intentToPresentation()
         }
+
+    }
+
+    fun loadFavorites(userId: String){
+        db.collection("Favorites").document().collection(userId)
+            .get()
+            .addOnSuccessListener {  snapshot ->
+                val favoList = mutableListOf<FoodTruck>()
+
+                for (document in snapshot.documents) {
+                    val truck = document.toObject<FoodTruck>()
+                    if (truck != null)
+                        favoList.add(truck)
+                        Log.d("!!!","${favoList[0].companyName}")
+                }
+
+            }
+
+    }
+
+    private fun addToFavorites(truck: FoodTruck) {
+
+        if(auth.currentUser!=null){
+       uploadFavorites(truck, auth.currentUser!!.uid)}
+    }
+
+    fun uploadFavorites(foodTruck: FoodTruck,userId:String){
+
+        db.collection("users").document(userId).collection("favorites")
+            .add(foodTruck)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Saved to Favorites", Toast.LENGTH_SHORT).show()
+            }
+
     }
     private fun signInAnonymously(){
         if(auth.currentUser==null){
@@ -137,6 +164,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
 
     }
+
+
 
     private fun navMenu(){
         binding.apply {
@@ -192,7 +221,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
         }
     }
-
 
     private fun singOut(){
        auth.signOut()
@@ -335,7 +363,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 }
                 for (truck in foodTruckList) {
 
-
                     addMarker(truck)
                 }
 
@@ -384,7 +411,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
             updateCardUI(truck)
 
-
+            addView.setOnClickListener{
+                addToFavorites(truck)
+            }
             cardView.setOnClickListener(){
                 val intent= Intent(this,PresentationActivity::class.java)
                 intent.putExtra("FoodTruckID",truck.documentId)
