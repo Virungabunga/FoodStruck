@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 
 class PresentationActivity : AppCompatActivity() {
     lateinit var ivFoodtruck : ImageView
@@ -32,6 +33,10 @@ class PresentationActivity : AppCompatActivity() {
             .addOnSuccessListener {documentSnapshot ->
                 val truck = documentSnapshot.toObject<FoodTruck>()
                 tvPresentationTitle.text=truck?.companyName
+                tvPresentationBread.text=truck?.info
+
+
+            /*Picasso.get().load(truck?.smallPicId!!).into(ivFoodtruck)*/
             }
     }
 }

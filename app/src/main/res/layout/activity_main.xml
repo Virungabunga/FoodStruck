@@ -93,6 +93,7 @@
             android:layout_height="23dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
+            android:background="#FFFFFF"
             android:text="TextView"
             android:visibility="invisible"
             map:layout_constraintEnd_toEndOf="parent"
