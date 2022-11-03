@@ -16,6 +16,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import java.io.File
 
+
 class PresentationActivity : AppCompatActivity() {
     lateinit var ivFoodtruck : ImageView
     lateinit var tvPresentationTitle : TextView
@@ -29,19 +30,24 @@ class PresentationActivity : AppCompatActivity() {
         tvPresentationTitle = findViewById(R.id.tvPresentationTitle)
         tvPresentationBread = findViewById(R.id.tvPresentationBread)
         db =Firebase.firestore
-        var foodtruckDocumentId = intent.getStringExtra("FOODTRUCK_ID")!!
-
-        db.collection("FoodTruck")
-            .document(foodtruckDocumentId)
-            .get()
-            .addOnSuccessListener {documentSnapshot ->
-                val truck = documentSnapshot.toObject<FoodTruck>()
-                tvPresentationTitle.text=truck?.companyName
-                tvPresentationBread.text=truck?.info
-                Glide.with(this).load(truck?.userPicID).into(ivFoodtruck)
 
 
+        val foodTruckDocumentId = intent.getStringExtra("FoodTruckId")
 
-            }
-    }
-}
+        if (foodTruckDocumentId != null) {
+            db.collection("FoodTruck")
+                .document(foodTruckDocumentId)
+                .get()
+                .addOnSuccessListener {documentSnapshot ->
+                    val truck = documentSnapshot.toObject<FoodTruck>()
+                    if (truck!=null){
+
+                        tvPresentationTitle.text=truck.companyName
+                        tvPresentationBread.text=truck.info
+                         Glide.with(this).load(truck?.userPicID).into(ivFoodtruck)
+                    }
+
+
+
+                }
+        }
