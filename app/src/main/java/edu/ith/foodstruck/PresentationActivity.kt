@@ -27,8 +27,12 @@ class PresentationActivity : AppCompatActivity() {
         tvPresentationTitle = findViewById(R.id.tvPresentationTitle)
         tvPresentationBread = findViewById(R.id.tvPresentationBread)
         db = Firebase.firestore
-
-
+        val rName = intent.getStringExtra("NAME")
+        val rInfo =intent.getStringExtra("INFO")
+        val rImge = intent.getStringExtra("IMAGE")
+        tvPresentationTitle.text=rName
+        tvPresentationBread.text=rInfo
+        Glide.with(this).load(rImge).into(ivFoodtruck)
         val foodTruckDocumentId = intent.getStringExtra("FoodTruckID")
 
         if (foodTruckDocumentId != null) {
@@ -37,6 +41,10 @@ class PresentationActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
                     val truck = documentSnapshot.toObject<FoodTruck>()
+
+                        tvPresentationTitle.text=rName
+                        tvPresentationBread.text=rInfo
+                        Glide.with(this).load(rImge).into(ivFoodtruck)
 
                     if (truck != null) {
 
@@ -50,6 +58,8 @@ class PresentationActivity : AppCompatActivity() {
                     }
 
                 }
+
+
         }
     }
 
