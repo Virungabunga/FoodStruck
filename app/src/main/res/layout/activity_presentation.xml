@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PresentationActivity">
+    tools:context=".PresentationActivity"
+    android:background="#C8E8CA">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -24,10 +25,12 @@
     </ScrollView>
 
     <ImageView
+        android:outlineAmbientShadowColor="@color/black"
         android:id="@+id/ivFoodtruck"
-        android:layout_width="346dp"
+        android:layout_width="400dp"
         android:layout_height="284dp"
         android:layout_marginBottom="9dp"
+        android:alpha="0.7"
         android:scaleType="fitStart"
         app:layout_constraintBottom_toTopOf="@+id/tvPresentationTitle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,10 +44,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:fontFamily="@font/roboto_thin"
         android:gravity="center"
         android:orientation="horizontal"
         android:text="FOODTRUCK NAMN"
-        android:textSize="34sp"
+        android:textSize="38sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvPresentationBread"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +59,9 @@
         android:id="@+id/tvPresentationBread"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="1dp"
+        android:fontFamily="@font/roboto_thin"
+        android:gravity="center"
         android:text="info om foodtruck"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView"
