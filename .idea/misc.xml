@@ -7,15 +7,15 @@
         <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/img.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/splash_image.xml" value="0.1315" />
-        <entry key="app/src/main/res/layout/activity_favorites.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_foodtruck_list.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_foodtruck_list.xml" value="0.2020172119140625" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.1766304347826087" />
         <entry key="app/src/main/res/layout/activity_maps.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_owner_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_owner_sign_up.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_presentation.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_registration.xml" value="0.14084507042253522" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/card_view_small_info.xml" value="0.335" />
         <entry key="app/src/main/res/layout/foodtruck_item.xml" value="0.2857142857142857" />
         <entry key="app/src/main/res/layout/foodtruck_items.xml" value="0.1" />
