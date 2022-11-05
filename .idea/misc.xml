@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/circle.xml" value="0.143" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2865" />
         <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/img.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/splash_image.xml" value="0.1315" />
@@ -25,6 +26,7 @@
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.1" />
         <entry key="app/src/main/res/layout/presentation_new.xml" value="0.1743560791015625" />
         <entry key="app/src/main/res/layout/splash_screen.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/menu_item.xml" value="0.335" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.24806201550387597" />
       </map>
     </option>
