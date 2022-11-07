@@ -30,6 +30,7 @@ class RegistrationActivity : AppCompatActivity() {
     lateinit var buttonSave: Button
     lateinit var btnSelectImage:Button
     lateinit var auth:FirebaseAuth
+    lateinit var btPlaceFoodtruck:Button
     val placeFoodTruck = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
        latLong = it.data?.getParcelableExtra("LAT_LONG",)
         Log.d("RegistrationActivity","${it.data?.getParcelableExtra<LatLng>("LAT_LONG")}")
@@ -49,10 +50,7 @@ class RegistrationActivity : AppCompatActivity() {
         auth=Firebase.auth
         buttonsPressed()
 
-        btPlaceFoodtruck.setOnClickListener(){
-            val intent = Intent(this,PlaceFoodtruckActivity::class.java)
-        placeFoodTruck.launch(intent)
-        }
+
 
 
 
@@ -80,6 +78,10 @@ class RegistrationActivity : AppCompatActivity() {
                uploadImage(this, imgURI)
             }
 
+        }
+        btPlaceFoodtruck.setOnClickListener(){
+            val intent = Intent(this,PlaceFoodtruckActivity::class.java)
+            placeFoodTruck.launch(intent)
         }
 
     }

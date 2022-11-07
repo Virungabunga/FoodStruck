@@ -33,7 +33,7 @@ class FoodtruckListActivity : AppCompatActivity() {
 
             db = FirebaseFirestore.getInstance()
             tempList= arrayListOf<FoodTruck>()
-        tempList.addAll(foodTruckList)
+
 
 
             recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
@@ -42,7 +42,10 @@ class FoodtruckListActivity : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this)
             val adapter = myAdapter(this, tempList)
             recyclerView.adapter = adapter
+        tempList.addAll(foodTruckList)
         adapter.setOnItemClickListener(object : myAdapter.onItemClickListener{
+
+
             override fun onItemClick(position: Int) {
                 Toast.makeText(this@FoodtruckListActivity,"You clicket on item $position",Toast.LENGTH_SHORT).show()
             val intent = Intent(this@FoodtruckListActivity,PresentationActivity::class.java)
@@ -102,7 +105,7 @@ class FoodtruckListActivity : AppCompatActivity() {
 
                     recyclerView.adapter!!.notifyDataSetChanged()
                 }else{
-                    tempList.clear()
+
                     tempList.addAll(foodTruckList)
                     recyclerView.adapter!!.notifyDataSetChanged()
                 }
