@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#84C59E"
+    tools:context=".UploadMenuActivity">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="409dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:alpha="0.5"
+                app:cardBackgroundColor="#00ACFB"
+                app:cardCornerRadius="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:background="#68BFE6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="Wild Card:"
+                        android:textSize="34sp" />
+
+                    <EditText
+                        android:id="@+id/etWildName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:ems="10"
+                        android:hint="Name"
+                        android:inputType="textPersonName"
+                        android:textSize="24sp" />
+
+                    <EditText
+                        android:id="@+id/etWildDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:ems="10"
+                        android:hint="Description"
+                        android:inputType="textPersonName"
+                        android:textSize="24sp" />
+
+                    <EditText
+                        android:id="@+id/etWildPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:ems="10"
+                        android:hint="Price"
+                        android:inputType="textPersonName"
+                        android:textSize="24sp" />
+
+                    <ImageView
+                        android:id="@+id/ivWildImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/foodstruckikonen" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView4"
+                android:layout_width="409dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:alpha="0.5"
+                android:background="#6BB5D6"
+                app:cardCornerRadius="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:background="#81B0C6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="Crowd Favorite:"
+                        android:textSize="34sp" />
+
+                    <EditText
+                        android:id="@+id/etFavoriteName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:ems="10"
+                        android:hint="Name"
+                        android:inputType="textPersonName"
+                        android:textSize="24sp" />
+
+                    <EditText
+                        android:id="@+id/etFavoriteDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:ems="10"
+                        android:hint="Description:"
+                        android:inputType="textPersonName"
+                        android:textSize="24sp" />
+
+                    <EditText
+                        android:id="@+id/etFavoritePrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:ems="10"
+                        android:hint="Price:"
+                        android:inputType="textPersonName"
+                        android:textSize="24sp" />
+
+                    <ImageView
+                        android:id="@+id/ivFavoriteImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/foodstruckikonen" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:alpha="0.5"
+                android:background="#6BB5D6"
+                app:cardCornerRadius="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#91C9E3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/y"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="Signature Meal:"
+                        android:textSize="34sp" />
+
+                    <EditText
+                        android:id="@+id/etSignatureName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:ems="10"
+                        android:hint="name"
+                        android:inputType="textPersonName"
+                        android:textSize="24sp" />
+
+                    <EditText
+                        android:id="@+id/etSignatureDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:ems="10"
+                        android:hint="description"
+                        android:inputType="textPersonName"
+                        android:textSize="24sp" />
+
+                    <EditText
+                        android:id="@+id/etSignaturePrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:ems="10"
+                        android:hint="price:"
+                        android:inputType="textPersonName"
+                        android:textSize="24sp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/ivSignatureImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/foodstruckikonen" />
+
+            <Button
+                android:id="@+id/btUploadMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="upload you menu" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
