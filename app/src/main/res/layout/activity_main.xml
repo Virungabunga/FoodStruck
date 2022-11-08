@@ -12,22 +12,22 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    <androidx.fragment.app.FragmentContainerView
 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        />
+        <androidx.fragment.app.FragmentContainerView
+
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <androidx.cardview.widget.CardView
-            android:visibility="invisible"
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_margin="10dp"
             android:layout_marginStart="10dp"
-            map:cardBackgroundColor="@color/white"
+            android:visibility="invisible"
+            map:cardBackgroundColor="#AECAE4"
             map:cardCornerRadius="20dp"
             map:cardElevation="10dp"
             map:cardMaxElevation="12dp"
@@ -83,28 +83,43 @@
                 android:layout_marginRight="80dp"
                 android:text="***** $$$"
                 android:textColor="#D86C6C" />
-            <ImageView
-                android:layout_margin="10dp"
 
+            <ImageView
                 android:id="@+id/addView"
+
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_margin="10dp"
                 android:src="@drawable/hej" />
 
 
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/loginView"
-            android:layout_width="64dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:background="#FFFFFF"
-            android:text=""
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvLoginView"
+            android:layout_width="120dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="39dp"
+            android:layout_marginEnd="70dp"
+            android:padding="5dp"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="5dp"
             android:visibility="invisible"
-            map:layout_constraintEnd_toEndOf="parent"
-            map:layout_constraintTop_toTopOf="parent" />
+            map:cardBackgroundColor="#F1B8B8"
+            map:cardCornerRadius="10dp"
+            map:cardElevation="15dp"
+            map:layout_constraintEnd_toEndOf="@+id/map"
+            map:layout_constraintTop_toTopOf="@+id/map">
+
+            <TextView
+                android:id="@+id/loginView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="TextView"
+                android:visibility="invisible" />
+        </androidx.cardview.widget.CardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.navigation.NavigationView
         android:backgroundTint="#FFFCC9"

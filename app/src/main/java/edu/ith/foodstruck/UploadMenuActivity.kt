@@ -88,6 +88,7 @@ class UploadMenuActivity : AppCompatActivity() {
                 uploadImage(this, imgURI)
             }
         }
+
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -182,6 +183,7 @@ class UploadMenuActivity : AppCompatActivity() {
             auth.currentUser?.uid
 
         )
+
         db.collection("Signature")
             .add(signature)
             .addOnSuccessListener {
@@ -193,6 +195,10 @@ class UploadMenuActivity : AppCompatActivity() {
 
         db.collection("favorite")
             .add(favorite)
+            .addOnSuccessListener {
+                val intent = Intent(this,MainActivity::class.java)
+                startActivity(intent)
+            }
     }
 
 }

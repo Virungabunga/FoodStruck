@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
+import android.view.View.inflate
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -30,7 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import edu.ith.foodstruck.databinding.ActivityMainBinding
+import edu.ith.foodstruck.databinding.ActivityFavoritesBinding.inflate
+import edu.ith.foodstruck.databinding.ActivityPlaceFoodtruckBinding.inflate
 import kotlin.math.roundToInt
 
 
@@ -50,9 +52,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     lateinit var locationRequest: LocationRequest
     private lateinit var auth: FirebaseAuth
     private lateinit var loginView:TextView
+    private lateinit var cvLoginView : CardView
     private lateinit var navMenu:NavigationView
     private lateinit var addView: ImageView
     private var myPos :LatLng =LatLng(59.0,18.0)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +79,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         ivSmallInfo=findViewById(R.id.iv_small_info)
         loginView=findViewById(R.id.loginView)
         addView=findViewById(R.id.addView)
+        cvLoginView = findViewById(R.id.cvLoginView)
 
 
 
@@ -220,17 +225,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         if(auth.currentUser != null) {
             navMenu.menu.findItem(R.id.fifthItem).isVisible = auth.currentUser?.isAnonymous != true
             Log.d("!!!!", "${auth.currentUser?.email}")
-            loginView.text="${auth.currentUser?.email}"
             loginView.isVisible =true
+            cvLoginView.isVisible=true
+            loginView.text="${auth.currentUser?.email}"
+
             navMenu.menu.findItem(R.id.fourthItem).isVisible=true
+            navMenu.menu.findItem(R.id.sixthItem).isVisible=true
 
 
 
 
         }  else {
             loginView.isVisible=false
+            cvLoginView.isVisible=false
             navMenu.menu.findItem(R.id.fourthItem).isVisible=false
             navMenu.menu.findItem(R.id.fifthItem).isVisible=false
+            navMenu.menu.findItem(R.id.sixthItem).isVisible=false
+
         }
     }
 
