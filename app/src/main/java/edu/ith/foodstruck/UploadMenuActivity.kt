@@ -1,15 +1,15 @@
 package edu.ith.foodstruck
 
-import FoodTruck
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.*
-import androidx.core.content.ContextCompat.startActivity
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -17,7 +17,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import org.w3c.dom.Text
 
 class UploadMenuActivity : AppCompatActivity() {
     private lateinit var etSignatureName : EditText
@@ -54,7 +53,7 @@ class UploadMenuActivity : AppCompatActivity() {
         ivFavorite = findViewById(R.id.ivFavoriteImage)
         ivWild = findViewById(R.id.ivWildImage)
         auth = Firebase.auth
-        auth.currentUser?.uid
+
         db = Firebase.firestore
         btUploadMenu = findViewById<Button>(R.id.btUploadMenu)
         buttonsPressed()
@@ -132,7 +131,7 @@ class UploadMenuActivity : AppCompatActivity() {
 
     }
     fun addMenu(uploadUrl:String) {
-
+        val userId = auth.currentUser?.uid
         val signatureName = etSignatureName.text.toString()
         val signatureDescription = etSignatureDescription.text.toString()
         val signaturePrice = etSignaturePrice.text.toString().toInt()
@@ -183,22 +182,27 @@ class UploadMenuActivity : AppCompatActivity() {
             auth.currentUser?.uid
 
         )
+        if (userId != null) {
+            db.collection("users").document(userId).collection("Menu")
+                .add(signature)
+                .addOnSuccessListener {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                }
+        }
+        if (userId != null) {
+            db.collection("users").document(userId).collection("Menu")
+                .add(wild)
+        }
 
-        db.collection("Signature")
-            .add(signature)
-            .addOnSuccessListener {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
-        db.collection("Wild")
-            .add(wild)
-
-        db.collection("favorite")
-            .add(favorite)
-            .addOnSuccessListener {
-                val intent = Intent(this,MainActivity::class.java)
-                startActivity(intent)
-            }
+        if (userId != null) {
+            db.collection("users").document(userId).collection("Menu")
+                .add(favorite)
+                .addOnSuccessListener {
+                    val intent = Intent(this,MainActivity::class.java)
+                    startActivity(intent)
+                }
+        }
     }
 
 }

@@ -7,10 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import org.w3c.dom.Text
 
 class myAdapter (val context: Context,
     private var FoodTruckList: ArrayList<FoodTruck>): RecyclerView
@@ -21,6 +19,10 @@ class myAdapter (val context: Context,
 
 
     }
+    fun filterList(foodTrucklist: ArrayList<FoodTruck>){
+        FoodTruckList = foodTrucklist
+    }
+
     fun setOnItemClickListener(listener: onItemClickListener){
         mListener=listener
     }

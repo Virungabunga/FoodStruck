@@ -2,53 +2,44 @@ package edu.ith.foodstruck
 
 import FoodTruck
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import java.util.*
-import kotlin.collections.ArrayList
 
 class FoodtruckListActivity : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
     private var layoutManager: RecyclerView.LayoutManager? = null
     private lateinit var recyclerView: RecyclerView
-    private var foodTruckList = ArrayList<FoodTruck>()
-    private var tempList = ArrayList<FoodTruck>()
+     private  var FoodTruckList = ArrayList<FoodTruck>()
+    private var filteredList = ArrayList<FoodTruck>()
+    private var adapter: myAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foodtruck_list)
-
-
-
-
-
-        db = FirebaseFirestore.getInstance()
-        arrayListOf<FoodTruck>().also { tempList = it }
-
-
-
+        db =Firebase.firestore
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-
-
         recyclerView.layoutManager = LinearLayoutManager(this)
-        tempList.addAll(foodTruckList)
-        Log.d("FoodTruckList","$tempList")
 
-        val adapter = myAdapter(this, tempList)
+
+
+
+        adapter = myAdapter(this,FoodTruckList )
         recyclerView.adapter = adapter
 
-
-        adapter.setOnItemClickListener(object : myAdapter.onItemClickListener {
+        adapter?.setOnItemClickListener(object : myAdapter.onItemClickListener {
 
 
             override fun onItemClick(position: Int) {
@@ -58,9 +49,9 @@ class FoodtruckListActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 val intent = Intent(this@FoodtruckListActivity, PresentationActivity::class.java)
-                intent.putExtra("NAME", foodTruckList[position].companyName)
-                intent.putExtra("INFO", foodTruckList[position].info)
-                intent.putExtra("IMAGE", foodTruckList[position].userPicID)
+                intent.putExtra("NAME", FoodTruckList[position].companyName)
+                intent.putExtra("INFO", FoodTruckList[position].info)
+                intent.putExtra("IMAGE", FoodTruckList[position].userPicID)
                 startActivity(intent)
 
 
@@ -76,17 +67,17 @@ class FoodtruckListActivity : AppCompatActivity() {
                 for (document in documentSnapshot.documents) {
                     val truck = document.toObject<FoodTruck>()
                     if (truck != null)
-                        foodTruckList.add(truck)
+                        FoodTruckList.add(truck)
+
 
 
                 }
-                adapter.notifyDataSetChanged()
+                adapter?.notifyDataSetChanged()
 
             }
-        tempList.addAll(foodTruckList)
-        Log.d("FoodTruckList","är du där? tempis $tempList")
 
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
@@ -102,23 +93,35 @@ class FoodtruckListActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-               tempList.clear()
+             //  FoodTruckList.clear()
+
+                Log.d("!!!", "typing")
+                filteredList.clear()
                 val searchText = newText!!.toLowerCase(Locale.getDefault())
                 if(searchText.isNotEmpty()){
-                    foodTruckList.forEach(){
+                    FoodTruckList.forEach{
                         if(it.companyName?.toLowerCase(Locale.getDefault())!!.contains(searchText)||it.info?.toLowerCase(
                                 Locale.getDefault())!!.contains(searchText)){
-                            tempList.add(it)
-                            Log.d("FoodTruckList","är du där?gg ${tempList.size}")
-                        }
-                    }
-                    recyclerView.adapter!!.notifyDataSetChanged()
-                }else{
-                    tempList.clear()
-                    tempList.addAll(foodTruckList)
-                    recyclerView.adapter!!.notifyDataSetChanged()
-                }
+                            filteredList.add(it)
+                            Log.d("!!!", "${it.companyName}")
 
+                        }
+
+                    }
+
+                    if (adapter == null) {
+                        Log.d("!!!","adapter null")
+                    }
+                    adapter?.filterList(filteredList)
+
+
+                }else{
+
+                   // filteredList.addAll(FoodTruckList)
+                    adapter?.filterList(FoodTruckList)
+
+                }
+                adapter?.notifyDataSetChanged()
                 return false
             }
 
