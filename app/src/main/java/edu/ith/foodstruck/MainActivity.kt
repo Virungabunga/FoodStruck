@@ -5,9 +5,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -416,11 +418,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     fun updateCardUI(truck : FoodTruck) {
+
+
         smalltitle.text = truck.companyName
         // set pic
         // set price
 
          cardView.isVisible = true
+        //for 5 seconds
+        Handler(Looper.getMainLooper()).postDelayed({
+            // Show you data here
+
+            cardView.setVisibility(View.INVISIBLE)
+
+        }, 4000)
 
          val dist = distanceToTruck(truck).roundToInt()
         tvSmallRating.text=dist.toString()+"m"
@@ -449,6 +460,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 intent.putExtra("FoodTruckID",truck.documentId)
                 startActivity(intent)
 
+            }
+            ivSmallInfo.setOnClickListener(){
+                val intent= Intent(this,PresentationActivity::class.java)
+                intent.putExtra("FoodTruckID",truck.documentId)
+                startActivity(intent)
             }
         }
         return true
