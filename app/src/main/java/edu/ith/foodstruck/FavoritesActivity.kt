@@ -2,9 +2,8 @@ package edu.ith.foodstruck
 
 import FoodTruck
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -12,7 +11,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.google.rpc.context.AttributeContext
 
 class FavoritesActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
@@ -27,24 +25,19 @@ class FavoritesActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
         auth=Firebase.auth
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        supportActionBar?.setHomeButtonEnabled(true)
 
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = myAdapter(this, foodTruckList)
+        val adapter = favoriteAdapter(
+            this,
+            this,
+            foodTruckList
+        )
         recyclerView.adapter = adapter
-        adapter.setOnItemClickListener(object : myAdapter.onItemClickListener{
-            override fun onItemClick(position: Int) {
-                Toast.makeText(this@FavoritesActivity,"You clicket on item $position",Toast.LENGTH_SHORT).show()
-                val intent = Intent(this@FavoritesActivity,PresentationActivity::class.java)
-                intent.putExtra("NAME",foodTruckList[position].companyName)
-                intent.putExtra("INFO",foodTruckList[position].info)
-                intent.putExtra("IMAGE",foodTruckList[position].userPicID)
-                startActivity(intent)
 
 
-            }
 
-        })
 
 
         val userId = auth.currentUser!!.uid
@@ -62,4 +55,11 @@ class FavoritesActivity : AppCompatActivity() {
 
             }
     }
-}
+
+    fun clickedItem(foodtruck: FoodTruck) {
+        val intent= Intent(this,PresentationActivity::class.java)
+        intent.putExtra("FoodTruckID",foodtruck.documentId)
+        startActivity(intent)
+    }
+    }
+

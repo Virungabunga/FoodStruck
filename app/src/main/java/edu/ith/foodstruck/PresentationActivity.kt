@@ -1,8 +1,6 @@
 package edu.ith.foodstruck
 
 import FoodTruck
-import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
@@ -10,12 +8,13 @@ import android.util.Log.i
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import org.w3c.dom.Text
 
 
 class PresentationActivity : AppCompatActivity() {
@@ -39,14 +38,17 @@ class PresentationActivity : AppCompatActivity() {
     lateinit var ivWildImage: ImageView
     lateinit var truck: FoodTruck
     private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_presentation)
+        supportActionBar?.setHomeButtonEnabled(true)
         ivFoodtruck = findViewById(R.id.ivFoodtruck)
         tvPresentationTitle = findViewById(R.id.tvPresentationTitle)
         tvPresentationBread = findViewById(R.id.tvPresentationBread)
         db = Firebase.firestore
+        auth= FirebaseAuth.getInstance()
         tvSignatureDescription = findViewById(R.id.tvSignatureDescription)
         tvSignatureName = findViewById(R.id.tvSignatureName)
         tvSignaturePrice = findViewById(R.id.tvSignaturePrice)
@@ -62,17 +64,44 @@ class PresentationActivity : AppCompatActivity() {
         val rName = intent.getStringExtra("NAME")
         val rInfo = intent.getStringExtra("INFO")
         val rImge = intent.getStringExtra("IMAGE")
-        tvPresentationTitle.text = rName
-        tvPresentationBread.text = rInfo
+
+        tvPresentationTitle.text=rName
+        tvPresentationBread.text=rInfo
+        val userId = auth.currentUser?.uid
 
 
+
+        /*if (userId != null) {
+            db.collection("food")
+                .document()
+                .collection("Menu")
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    val foodList:MutableList<Food>
+                    for (document in documentSnapshot.documents){
+                        val dish= document.toObject<Food>()
+                        foodList.add(dish)
+                    }
+
+                    tvSignatureName.text=foodList[0].name
+                    tvSignatureDescription.text=foodList[0].description
+                    tvSignaturePrice.text=foodList[0].price.toString()
+
+                    tvFavoriteName.text=foodList[1].name
+                    tvFavoriteDescription.text=foodList[1].description
+                    tvFavoritePrice.text=foodList[1].price.toString()
+
+
+
+
+
+                }
+        }             */
 
 
 
 
         Glide.with(this).load(rImge).into(ivFoodtruck)
-
-
         val foodTruckDocumentId = intent.getStringExtra("FoodTruckID")
 
         if (foodTruckDocumentId != null) {

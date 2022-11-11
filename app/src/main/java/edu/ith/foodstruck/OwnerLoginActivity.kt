@@ -1,15 +1,13 @@
 package edu.ith.foodstruck
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class OwnerLoginActivity : AppCompatActivity() {
@@ -27,7 +25,7 @@ class OwnerLoginActivity : AppCompatActivity() {
         tvNotRegistrered=findViewById(R.id.tvNotRegistrered)
         firebaseAuth = FirebaseAuth.getInstance()
         var buttonLogin=findViewById<Button>(R.id.buttonLogin)
-        btShowHide = findViewById(R.id.btShowHide)
+
 
         tvNotRegistrered.setOnClickListener(){
             var intent = Intent(this,OwnerSignUpActivity::class.java)
@@ -37,15 +35,7 @@ class OwnerLoginActivity : AppCompatActivity() {
             loginUser()
         }
 
-        btShowHide.setOnClickListener {
-            if (btShowHide.text.toString().equals("Show")) {
-                etUserPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                btShowHide.text = "Hide"
-            } else {
-                etUserPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-                btShowHide.text = "Show"
-            }
-        }
+
 
 
 
