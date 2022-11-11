@@ -40,7 +40,7 @@ class RegistrationActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
-        var btPlaceFoodtruck = findViewById<Button>(R.id.btPlaceFoodtruck)
+         btPlaceFoodtruck = findViewById<Button>(R.id.btPlaceFoodtruck)
         etFoodtruckName = findViewById(R.id.etFoodtruckName)
         etFoodTruckBread = findViewById(R.id.etFoodtruckBread)
         db = Firebase.firestore
