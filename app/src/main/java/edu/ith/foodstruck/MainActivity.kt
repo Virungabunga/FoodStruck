@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         locationRequest = createLocationRequest()
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                myPos=LatLng(locationResult.lastLocation.latitude,locationResult.lastLocation.longitude)
+                myPos=LatLng(locationResult.lastLocation!!.latitude, locationResult.lastLocation!!.longitude)
                 for (location in locationResult.locations) {
 
 
