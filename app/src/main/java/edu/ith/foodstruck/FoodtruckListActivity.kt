@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,14 +13,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import edu.ith.foodstruck.myAdapter.ClickListener
 import java.util.*
 
-class FoodtruckListActivity : AppCompatActivity() {
+class FoodtruckListActivity : AppCompatActivity() , ClickListener {
 
     private lateinit var db: FirebaseFirestore
     private var layoutManager: RecyclerView.LayoutManager? = null
     private lateinit var recyclerView: RecyclerView
-     private  var FoodTruckList = ArrayList<FoodTruck>()
+    private var FoodTruckList = ArrayList<FoodTruck>()
     private var filteredList = ArrayList<FoodTruck>()
     private var adapter: myAdapter? = null
 
@@ -29,37 +29,13 @@ class FoodtruckListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foodtruck_list)
-        db =Firebase.firestore
+        db = Firebase.firestore
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        supportActionBar?.setHomeButtonEnabled(true)
 
-
-
-
-        adapter = myAdapter(this,FoodTruckList )
+        adapter = myAdapter( this,this@FoodtruckListActivity,FoodTruckList)
         recyclerView.adapter = adapter
-
-        adapter?.setOnItemClickListener(object : myAdapter.onItemClickListener {
-
-
-            override fun onItemClick(position: Int) {
-                Toast.makeText(
-                    this@FoodtruckListActivity,
-                    "You clicket on item $position",
-                    Toast.LENGTH_SHORT
-                ).show()
-                val intent = Intent(this@FoodtruckListActivity, PresentationActivity::class.java)
-                intent.putExtra("NAME", FoodTruckList[position].companyName)
-                intent.putExtra("INFO", FoodTruckList[position].info)
-                intent.putExtra("IMAGE", FoodTruckList[position].userPicID)
-                startActivity(intent)
-
-
-            }
-
-        })
-
-
 
         db.collection("FoodTruck")
             .get()
@@ -68,7 +44,6 @@ class FoodtruckListActivity : AppCompatActivity() {
                     val truck = document.toObject<FoodTruck>()
                     if (truck != null)
                         FoodTruckList.add(truck)
-
 
 
                 }
@@ -93,31 +68,36 @@ class FoodtruckListActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-             //  FoodTruckList.clear()
+                //  FoodTruckList.clear()
+
 
                 Log.d("!!!", "typing")
                 filteredList.clear()
                 val searchText = newText!!.toLowerCase(Locale.getDefault())
-                if(searchText.isNotEmpty()){
-                    FoodTruckList.forEach{
-                        if(it.companyName?.toLowerCase(Locale.getDefault())!!.contains(searchText)||it.info?.toLowerCase(
-                                Locale.getDefault())!!.contains(searchText)){
+                if (searchText.isNotEmpty()) {
+                    FoodTruckList.forEach {
+                        if (it.companyName?.toLowerCase(Locale.getDefault())!!
+                                .contains(searchText) || it.info?.toLowerCase(
+                                Locale.getDefault()
+                            )!!.contains(searchText)
+                        ) {
                             filteredList.add(it)
                             Log.d("!!!", "${it.companyName}")
+
 
                         }
 
                     }
 
                     if (adapter == null) {
-                        Log.d("!!!","adapter null")
+                        Log.d("!!!", "adapter null")
                     }
                     adapter?.filterList(filteredList)
 
 
-                }else{
+                } else {
 
-                   // filteredList.addAll(FoodTruckList)
+                    // filteredList.addAll(FoodTruckList)
                     adapter?.filterList(FoodTruckList)
 
                 }
@@ -125,10 +105,19 @@ class FoodtruckListActivity : AppCompatActivity() {
                 return false
             }
 
+
         })
 
 
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun clickedItem(foodtruck: FoodTruck) {
+       Log.e("!!!","you clicked ${foodtruck.companyName}")
+
+        val intent= Intent(this,PresentationActivity::class.java)
+        intent.putExtra("FoodTruckID",foodtruck.documentId)
+        startActivity(intent)
+    }
 }
+

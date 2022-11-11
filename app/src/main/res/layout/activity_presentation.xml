@@ -22,37 +22,47 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ivFoodtruck"
-                android:layout_width="400dp"
-                android:layout_height="284dp"
-                android:layout_marginBottom="9dp"
-                android:alpha="0.7"
-                android:outlineAmbientShadowColor="@color/black"
-                android:scaleType="fitStart"
-                app:srcCompat="@drawable/foodtrucks" />
-
-            <TextView
-                android:id="@+id/tvPresentationTitle"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/roboto_thin"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:text="FOODTRUCK NAMN"
-                android:textSize="38sp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tvPresentationBread"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:fontFamily="@font/roboto_thin"
-                android:gravity="center"
-                android:text="info om foodtruck"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/tvPresentationBread"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_thin"
+                    android:gravity="center"
+                    android:text="info om foodtruck"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvPresentationTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_thin"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:text="FOODTRUCK NAMN"
+                    android:textSize="38sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/tvPresentationBread"
+                    app:layout_constraintTop_toBottomOf="@+id/ivFoodtruck" />
+
+                <ImageView
+                    android:id="@+id/ivFoodtruck"
+                    android:layout_width="400dp"
+                    android:layout_height="284dp"
+                    android:alpha="0.7"
+                    app:layout_constraintBottom_toTopOf="@+id/tvPresentationTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/foodtrucks"
+                    android:contentDescription="TODO" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
     </ScrollView>
