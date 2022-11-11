@@ -31,10 +31,12 @@
         </activity>
         <activity
             android:name=".FavoritesActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".FoodtruckListActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".PlaceFoodtruckActivity"
             android:exported="false"
@@ -50,7 +52,8 @@
             android:exported="false" />
         <activity
             android:name=".PresentationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

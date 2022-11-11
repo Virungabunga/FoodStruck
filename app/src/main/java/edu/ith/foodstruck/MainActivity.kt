@@ -48,17 +48,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     lateinit var tvSmallRating: TextView
     lateinit var cardView: CardView
     lateinit var smalltitle: TextView
-    lateinit var ivSmallInfo:ImageView
+    lateinit var ivSmallInfo: ImageView
     private val REQUEST_LOCATION = 1
     lateinit var locationProvider: FusedLocationProviderClient
     lateinit var locationCallback: LocationCallback
     lateinit var locationRequest: LocationRequest
     private lateinit var auth: FirebaseAuth
-    private lateinit var loginView:TextView
-    private lateinit var cvLoginView : CardView
-    private lateinit var navMenu:NavigationView
+    private lateinit var loginView: TextView
+    private lateinit var cvLoginView: CardView
+    private lateinit var navMenu: NavigationView
     private lateinit var addView: ImageView
-    private var myPos :LatLng =LatLng(59.0,18.0)
+    private var myPos: LatLng = LatLng(59.0, 18.0)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +69,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
+
+
+
+    // this event will enable the back
+    // function to the button on press
+
 
 
 
@@ -99,7 +107,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
 
-
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onContextItemSelected(item)
+    }
     private fun addToFavorites(truck: FoodTruck) {
 
         if(auth.currentUser!=null){
@@ -116,8 +132,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     }
     private fun signInAnonymously(){
-        if(auth.currentUser==null){
+        if(auth.currentUser==null) {
+
             auth.signInAnonymously()
+
+            //Kolla upp varför vi justnu skapar upp väldigt många anonyma användare
         }
     }
 
@@ -221,19 +240,26 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private fun singOut(){
        auth.signOut()
+           .apply {
+               auth.currentUser
+           }
+
         updateUI()
     }
 
     private fun updateUI (){
         if(auth.currentUser != null) {
+
+
             navMenu.menu.findItem(R.id.fifthItem).isVisible = auth.currentUser?.isAnonymous != true
-            Log.d("!!!!", "${auth.currentUser?.email}")
-            loginView.isVisible =true
-            cvLoginView.isVisible=true
+
+
+            loginView.isVisible = auth.currentUser?.isAnonymous != true
+            cvLoginView.isVisible= auth.currentUser?.isAnonymous != true
             loginView.text="${auth.currentUser?.email}"
 
-            navMenu.menu.findItem(R.id.fourthItem).isVisible=true
-            navMenu.menu.findItem(R.id.sixthItem).isVisible=true
+            navMenu.menu.findItem(R.id.fourthItem).isVisible=auth.currentUser?.isAnonymous != true
+            navMenu.menu.findItem(R.id.sixthItem).isVisible=auth.currentUser?.isAnonymous != true
 
 
 

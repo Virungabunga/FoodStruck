@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OwnerSignUpActivity"
-    android:background="#ECBD85">
+    android:background="#E4CE80">
 
 
     <androidx.cardview.widget.CardView
@@ -15,7 +15,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="150dp"
         android:layout_marginRight="50dp"
-        app:cardBackgroundColor="#82C3BC"
+        app:cardBackgroundColor="#8ABC7D"
         app:cardCornerRadius="50dp"
         app:cardElevation="@dimen/cardview_default_elevation"
         app:layout_constraintBottom_toBottomOf="parent"

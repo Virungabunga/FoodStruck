@@ -2,15 +2,17 @@ package edu.ith.foodstruck
 
 import FoodTruck
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +21,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import java.util.*
 
 class RegistrationActivity : AppCompatActivity() {
     lateinit var etFoodtruckName: EditText
@@ -35,12 +36,15 @@ class RegistrationActivity : AppCompatActivity() {
        latLong = it.data?.getParcelableExtra("LAT_LONG",)
         Log.d("RegistrationActivity","${it.data?.getParcelableExtra<LatLng>("LAT_LONG")}")
     }
+
+
+
     var latLong : LatLng? = null
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
-        var btPlaceFoodtruck = findViewById<Button>(R.id.btPlaceFoodtruck)
+        btPlaceFoodtruck = findViewById<Button>(R.id.btPlaceFoodtruck)
         etFoodtruckName = findViewById(R.id.etFoodtruckName)
         etFoodTruckBread = findViewById(R.id.etFoodtruckBread)
         db = Firebase.firestore

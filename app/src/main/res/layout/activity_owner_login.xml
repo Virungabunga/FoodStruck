@@ -46,17 +46,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.85" />
 
-            <Button
-                android:id="@+id/btShowHide"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text="Show"
-                app:cornerRadius="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.552" />
+
 
             <EditText
                 android:id="@+id/etUserPassword"
@@ -66,10 +56,9 @@
                 android:layout_marginBottom="70dp"
                 android:ems="10"
                 android:hint="Lösenord:"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:textColorHint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btShowHide"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etUserName" />
