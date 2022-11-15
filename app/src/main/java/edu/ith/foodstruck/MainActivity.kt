@@ -76,14 +76,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
 
-
-
-    // this event will enable the back
-    // function to the button on press
-
-
-
-
        navMenu = findViewById(R.id.navView)
 
         auth = Firebase.auth
@@ -232,12 +224,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                             .show()
 
                     }
-                    R.id.sixthItem ->{
-                        var intent = Intent(this@MainActivity,UploadMenuActivity::class.java)
-                        startActivity(intent)
-                        Toast.makeText(this@MainActivity, "Upload Menu", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+
                 }
                 true
             }
@@ -269,7 +256,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             loginView.text="${auth.currentUser?.email}"
 
             navMenu.menu.findItem(R.id.fourthItem).isVisible=auth.currentUser?.isAnonymous != true
-            navMenu.menu.findItem(R.id.sixthItem).isVisible=auth.currentUser?.isAnonymous != true
+
 
 
 
@@ -279,7 +266,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             cvLoginView.isVisible=false
             navMenu.menu.findItem(R.id.fourthItem).isVisible=false
             navMenu.menu.findItem(R.id.fifthItem).isVisible=false
-            navMenu.menu.findItem(R.id.sixthItem).isVisible=false
+
 
         }
     }
@@ -296,7 +283,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         return result[0]
     }
 
-
+//
     private fun intentToPresentation(){
         val intent=Intent(this,PresentationActivity::class.java)
         startActivity(intent)
@@ -377,11 +364,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                         59.33507323679574,
                         18.067196534476423,
                     ),
-                    10F,
+                    11F,
                 )
         )
         checkPermission()
         mMap.isMyLocationEnabled = true
+
        mMap.uiSettings.isZoomControlsEnabled= true
         googleMap.setOnMarkerClickListener(this)
 
@@ -439,7 +427,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
             cardView.setVisibility(View.INVISIBLE)
 
-        }, 4000)
+        }, 5000)
 
          val dist = distanceToTruck(truck).roundToInt()
         tvSmallRating.text=dist.toString()+"m"

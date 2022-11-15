@@ -21,12 +21,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import kotlin.properties.Delegates
 
 class RegistrationActivity : AppCompatActivity() {
     lateinit var etFoodtruckName: EditText
     lateinit var etFoodTruckBread: EditText
     lateinit var ivUpload: ImageView
-
+   private var saveCount by Delegates.notNull<Int>()
     lateinit var db: FirebaseFirestore
     lateinit var buttonSave: Button
     lateinit var btnSelectImage:Button
@@ -60,7 +61,10 @@ class RegistrationActivity : AppCompatActivity() {
 
 
 
+
     }
+
+
 
 
     fun buttonsPressed(){
@@ -76,6 +80,8 @@ class RegistrationActivity : AppCompatActivity() {
 
 
         buttonSave.setOnClickListener {
+
+
 
             val imgURI = buttonSave.tag as Uri?
             if (imgURI == null) {
@@ -103,6 +109,7 @@ class RegistrationActivity : AppCompatActivity() {
             // Use Uri object instead of File to avoid storage permissions
             ivUpload.setImageURI(uri)
             buttonSave.setTag(uri)
+
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {
@@ -136,6 +143,7 @@ class RegistrationActivity : AppCompatActivity() {
     }
     fun addFoodTruck(uploadUrl:String) {
 
+
         val foodtruckName = etFoodtruckName.text.toString()
         val foodtruckBread = etFoodTruckBread.text.toString()
 
@@ -152,7 +160,9 @@ class RegistrationActivity : AppCompatActivity() {
         db.collection("FoodTruck")
             .add(truck)
             .addOnSuccessListener {
-                val intent = Intent(this, MainActivity::class.java)
+
+
+                val intent = Intent(this, UploadMenuActivity::class.java)
                 startActivity(intent)
             }
 

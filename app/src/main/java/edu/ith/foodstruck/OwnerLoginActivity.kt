@@ -25,7 +25,7 @@ class OwnerLoginActivity : AppCompatActivity() {
         tvNotRegistrered=findViewById(R.id.tvNotRegistrered)
         firebaseAuth = FirebaseAuth.getInstance()
         var buttonLogin=findViewById<Button>(R.id.buttonLogin)
-
+        firebaseAuth.currentUser?.uid
 
         tvNotRegistrered.setOnClickListener(){
             var intent = Intent(this,OwnerSignUpActivity::class.java)
@@ -49,7 +49,9 @@ class OwnerLoginActivity : AppCompatActivity() {
                 firebaseAuth.signInWithEmailAndPassword(userName,userPassword)
                     .addOnSuccessListener {
                         val intent=Intent(this,MainActivity::class.java)
+                        intent.putExtra("CURRENT_USER",firebaseAuth.currentUser?.uid)
                         startActivity(intent)
+
                     }
 
             } else if (userPassword.isEmpty()) {
