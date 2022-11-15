@@ -35,7 +35,10 @@ class UploadMenuActivity : AppCompatActivity() {
     private lateinit var ivWild : ImageView
     private lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
-    private lateinit var btUploadMenu :Button
+    private lateinit var btUploadDish1 :Button
+    private lateinit var btUploadDish2 :Button
+    private lateinit var btUploadDish3 :Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload_menu)
@@ -55,8 +58,11 @@ class UploadMenuActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         db = Firebase.firestore
-        btUploadMenu = findViewById<Button>(R.id.btUploadMenu)
+        btUploadDish1 = findViewById<Button>(R.id.btUploadPic1)
+        btUploadDish2 = findViewById<Button>(R.id.btUploadPic2)
+        btUploadDish3 = findViewById<Button>(R.id.btUploadPic3)
         buttonsPressed()
+
 
 
 
@@ -79,12 +85,29 @@ class UploadMenuActivity : AppCompatActivity() {
             .maxResultSize(1080, 1080)
             .start()}
 
-        btUploadMenu.setOnClickListener{
-            val imgURI = btUploadMenu.tag as Uri?
+        btUploadDish1.setOnClickListener{
+            val imgURI = btUploadDish1.tag as Uri?
             if (imgURI == null) {
                 Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
             } else {
-                uploadImage(this, imgURI)
+                uploadImage(this, imgURI,1)
+            }
+        }
+        btUploadDish2.setOnClickListener{
+            val imgURI = btUploadDish1.tag as Uri?
+            if (imgURI == null) {
+                Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
+            } else {
+                uploadImage(this, imgURI,2)
+            }
+        }
+        btUploadDish3.setOnClickListener{
+            val imgURI = btUploadDish1.tag as Uri?
+            if (imgURI == null) {
+                Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
+            } else {
+
+                uploadImage(this, imgURI,3)
             }
         }
 
@@ -99,17 +122,17 @@ class UploadMenuActivity : AppCompatActivity() {
             ivSignature.setImageURI(uri)
             ivFavorite.setImageURI(uri)
             ivWild.setImageURI(uri)
-            btUploadMenu.setTag(uri)
+            btUploadDish1.setTag(uri)
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
-    fun uploadImage(context: Context, imageFileUri: Uri) {
+    fun uploadImage(context: Context, imageFileUri: Uri,picIndex:Int) {
         val mStorageRef = FirebaseStorage.getInstance().reference
 
-        val ref = mStorageRef.child("images/${auth.currentUser?.uid}.png")
+        val ref = mStorageRef.child("images/${auth.currentUser?.uid}/dish$picIndex.png")
 
         val uploadTask = ref.putFile(imageFileUri)
         uploadTask.continueWithTask { task ->

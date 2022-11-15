@@ -79,6 +79,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/foodstruckikonen" />
+                    <Button
+                        android:id="@+id/btUploadPic1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="upload your dish" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -142,6 +147,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/foodstruckikonen" />
+                    <Button
+                        android:id="@+id/btUploadPic2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="upload your dish" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -210,7 +220,7 @@
                 app:srcCompat="@drawable/foodstruckikonen" />
 
             <Button
-                android:id="@+id/btUploadMenu"
+                android:id="@+id/btUploadPic3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="upload you menu" />

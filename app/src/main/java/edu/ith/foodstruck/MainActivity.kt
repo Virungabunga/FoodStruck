@@ -30,8 +30,10 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -125,13 +127,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
 
     }
-    private fun signInAnonymously(){
+    private fun signInAnonymously() {
         if(auth.currentUser==null) {
 
             auth.signInAnonymously()
 
             //Kolla upp varför vi justnu skapar upp väldigt många anonyma användare
         }
+
+
     }
 
 
@@ -228,12 +232,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     private fun singOut(){
-       auth.signOut()
-           .apply {
-               auth.currentUser
-           }
+        if (auth.currentUser?.isAnonymous == false ) {
+            auth.signOut()
+                .apply {
+                    auth.currentUser
+                }
 
-        updateUI()
+            updateUI()
+        }
+
+
     }
 
     private fun updateUI (){
