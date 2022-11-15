@@ -82,6 +82,7 @@ class RegistrationActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
             } else {
                uploadImage(this, imgURI)
+
             }
 
         }
@@ -112,7 +113,7 @@ class RegistrationActivity : AppCompatActivity() {
     fun uploadImage(context: Context, imageFileUri: Uri) {
         val mStorageRef = FirebaseStorage.getInstance().reference
 
-        val ref = mStorageRef.child("images/${auth.currentUser?.uid}.png")
+        val ref = mStorageRef.child("images/${auth.currentUser?.uid}/.png")
 
         val uploadTask = ref.putFile(imageFileUri)
         uploadTask.continueWithTask { task ->
