@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -73,17 +74,18 @@ class UploadMenuActivity : AppCompatActivity() {
             .crop()
             .compress(1024)
             .maxResultSize(1080, 1080)
-            .start()}
+            .start(333)
+                }
         ivFavorite.setOnClickListener{ImagePicker.with(this)
             .crop()
             .compress(1024)
             .maxResultSize(1080, 1080)
-            .start()}
+            .start(222)}
         ivWild.setOnClickListener{ImagePicker.with(this)
             .crop()
             .compress(1024)
             .maxResultSize(1080, 1080)
-            .start()}
+            .start(111)}
 
         btUploadDish1.setOnClickListener{
             val imgURI = btUploadDish1.tag as Uri?
@@ -112,17 +114,35 @@ class UploadMenuActivity : AppCompatActivity() {
         }
 
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?,) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             //Image Uri will not be null for RESULT_OK
             val uri: Uri = data?.data!!
+//            btUploadDish1.setTag(uri)
+//            ivWild.setImageURI(uri)
 
+            Log.d("!!!", requestCode.toString())
+
+             when (requestCode){
+                111 -> {btUploadDish1.setTag(uri)
+                      ivWild.setImageURI(uri)}
+
+
+                222 ->  { btUploadDish2.setTag(uri)
+                       ivFavorite.setImageURI(uri) }
+
+                333 ->  { btUploadDish3.setTag(uri)
+                       ivSignature.setImageURI(uri)}
+                 else  -> return
+            }
             // Use Uri object instead of File to avoid storage permissions
-            ivSignature.setImageURI(uri)
-            ivFavorite.setImageURI(uri)
-            ivWild.setImageURI(uri)
-            btUploadDish1.setTag(uri)
+
+
+
+
+
+
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {
@@ -131,62 +151,108 @@ class UploadMenuActivity : AppCompatActivity() {
     }
     fun uploadImage(context: Context, imageFileUri: Uri,picIndex:Int) {
         val mStorageRef = FirebaseStorage.getInstance().reference
+        val uri1 = btUploadDish1.getTag()
+        val uri2 = btUploadDish2.getTag()
+        val uri3 = btUploadDish3.getTag()
 
         val ref = mStorageRef.child("images/${auth.currentUser?.uid}/dish$picIndex.png")
 
-        val uploadTask = ref.putFile(imageFileUri)
-        uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
+        if(uri1 != null && uri2!=null && uri3!=null){
+
+            val uploadTask1 = ref.putFile(uri1 as Uri)
+            uploadTask1.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                ref.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUri = task.result.toString()
+                    val uploadTask = ref.putFile(uri2 as Uri)
+                    uploadTask.continueWithTask { task ->
+                        if (!task.isSuccessful) {
+                            task.exception?.let {
+                                throw it
+                            }
+                        }
+                        ref.downloadUrl
+                    }.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val downloadUri = task.result.toString()
+                            val uploadTask = ref.putFile(uri3 as Uri)
+                            uploadTask.continueWithTask { task ->
+                                if (!task.isSuccessful) {
+                                    task.exception?.let {
+                                        throw it
+                                    }
+                                }
+                                ref.downloadUrl
+                            }.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val downloadUri = task.result.toString()
+                                    addMenu(uri1.toString(),uri2.toString(),uri3.toString())
+                                } else {
+                                    // Handle failures
+                                    // ...
+                                }
+                            }
+                        } else {
+                            // Handle failures
+                            // ...
+                        }
+                    }
+                } else {
+                    // Handle failures
+                    // ...
                 }
             }
-            ref.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result.toString()
-                addMenu(downloadUri)
-            } else {
-                // Handle failures
-                // ...
-            }
+
         }
+//        val uploadTask = ref.putFile(imageFileUri)
+//        uploadTask.continueWithTask { task ->
+//            if (!task.isSuccessful) {
+//                task.exception?.let {
+//                    throw it
+//                }
+//            }
+//            ref.downloadUrl
+//        }.addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                val downloadUri = task.result.toString()
+//                addMenu(downloadUri)
+//            } else {
+//                // Handle failures
+//                // ...
+//            }
+//        }
 
     }
-    fun addMenu(uploadUrl:String) {
+    fun addMenu(uploadUrl1:String,uploadUrl2:String,uploadUrl3:String) {
+
         val userId = auth.currentUser?.uid
+
         val signatureName = etSignatureName.text.toString()
         val signatureDescription = etSignatureDescription.text.toString()
         val signaturePrice = etSignaturePrice.text.toString().toInt()
 
 
         val wildName = etWildName.text.toString()
-            val wildDescription = etWildDescription.text.toString()
-                val wildPrice = etWildPrice.text.toString().toInt()
-        ivWild.setOnClickListener{
-            ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(500, 500)
-                .start()
-        }
+        val wildDescription = etWildDescription.text.toString()
+        val wildPrice = etWildPrice.text.toString().toInt()
+
+
 
         val favoriteName = etFavoriteName.text.toString()
         val favoriteDescription = etFavoriteDescription.text.toString()
         val favoritePrice = etFavoritePrice.text.toString().toInt()
-        ivFavorite.setOnClickListener{
-            ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(500, 500)
-                .start()
-        }
 
         val signature = Food(
             signatureName,
             signatureDescription,
             signaturePrice,
-            uploadUrl,
+            uploadUrl3,
             auth.currentUser?.uid
 
             )
@@ -194,14 +260,14 @@ class UploadMenuActivity : AppCompatActivity() {
             favoriteName,
             favoriteDescription,
             favoritePrice,
-            uploadUrl,
+            uploadUrl2,
             auth.currentUser?.uid
                 )
         val wild = Food(
             wildName,
             wildDescription,
             wildPrice,
-            uploadUrl,
+            uploadUrl1,
             auth.currentUser?.uid
 
         )
