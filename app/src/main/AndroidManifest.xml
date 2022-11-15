@@ -43,10 +43,12 @@
             android:label="@string/title_activity_place_foodtruck" />
         <activity
             android:name=".OwnerSignUpActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".OwnerLoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".RegistrationActivity"
             android:exported="false" />
