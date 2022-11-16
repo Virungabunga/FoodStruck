@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PresentationActivity"
-    android:background="#EDD3B4">
+    android:background="#E4CCA9"
+    >
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -50,7 +51,8 @@
                     android:textSize="38sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/tvPresentationBread"
-                    app:layout_constraintTop_toBottomOf="@+id/ivFoodtruck" />
+                    app:layout_constraintTop_toBottomOf="@+id/ivFoodtruck"
+                    tools:layout_editor_absoluteX="0dp" />
 
                 <ImageView
                     android:id="@+id/ivFoodtruck"
@@ -71,10 +73,13 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
+
         android:id="@+id/cardview"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="350dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="482dp"
+        android:layout_marginEnd="15dp"
         app:barrierMargin="15dp"
         app:cardBackgroundColor="#E4CCA9"
         app:cardCornerRadius="15dp"
@@ -120,7 +125,7 @@
                         android:id="@+id/tvSignatureName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:fontFamily="@font/roboto_thin"
                         android:layout_marginTop="4dp"
                         android:text="TextView"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -161,7 +166,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView6"
-                android:layout_width="409dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="1dp"
@@ -235,7 +240,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView7"
-                android:layout_width="409dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="21dp"
