@@ -86,30 +86,30 @@ class UploadMenuActivity : AppCompatActivity() {
             .compress(1024)
             .maxResultSize(1080, 1080)
             .start(111)}
-
+            //Sig
         btUploadDish1.setOnClickListener{
             val imgURI = btUploadDish1.tag as Uri?
             if (imgURI == null) {
                 Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
             } else {
-                uploadImage(this, imgURI,1)
+                uploadImage(this, imgURI)
             }
-        }
+        }       //Favori
         btUploadDish2.setOnClickListener{
-            val imgURI = btUploadDish1.tag as Uri?
+            val imgURI = btUploadDish2.tag as Uri?
             if (imgURI == null) {
                 Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
             } else {
-                uploadImage(this, imgURI,2)
+                uploadImage(this, imgURI)
             }
-        }
+        }       //Wild
         btUploadDish3.setOnClickListener{
-            val imgURI = btUploadDish1.tag as Uri?
+            val imgURI = btUploadDish3.tag as Uri?
             if (imgURI == null) {
                 Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
             } else {
 
-                uploadImage(this, imgURI,3)
+                uploadImage(this, imgURI)
             }
         }
 
@@ -149,50 +149,58 @@ class UploadMenuActivity : AppCompatActivity() {
             Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
-    fun uploadImage(context: Context, imageFileUri: Uri,picIndex:Int) {
+    fun uploadImage(context: Context, imageFileUri: Uri) {
         val mStorageRef = FirebaseStorage.getInstance().reference
         val uri1 = btUploadDish1.getTag()
         val uri2 = btUploadDish2.getTag()
         val uri3 = btUploadDish3.getTag()
 
-        val ref = mStorageRef.child("images/${auth.currentUser?.uid}/dish$picIndex.png")
+        val ref1 = mStorageRef.child("images/${auth.currentUser?.uid}/dish1png")
+        val ref2 = mStorageRef.child("images/${auth.currentUser?.uid}/dish2.png")
+        val ref3 = mStorageRef.child("images/${auth.currentUser?.uid}/dish3.png")
 
         if(uri1 != null && uri2!=null && uri3!=null){
 
-            val uploadTask1 = ref.putFile(uri1 as Uri)
+            val uploadTask1 = ref1.putFile(uri1 as Uri)
+
             uploadTask1.continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let {
                         throw it
                     }
                 }
-                ref.downloadUrl
+                ref1.downloadUrl
             }.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val downloadUri = task.result.toString()
-                    val uploadTask = ref.putFile(uri2 as Uri)
-                    uploadTask.continueWithTask { task ->
+                    val downloadUri1 = task.result.toString()
+
+                    val uploadTask2 = ref2.putFile(uri2 as Uri)
+
+                    uploadTask2.continueWithTask { task ->
                         if (!task.isSuccessful) {
                             task.exception?.let {
                                 throw it
                             }
                         }
-                        ref.downloadUrl
+                        ref2.downloadUrl
                     }.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val downloadUri = task.result.toString()
-                            val uploadTask = ref.putFile(uri3 as Uri)
+
+                            val downloadUri2 = task.result.toString()
+                            val uploadTask = ref3.putFile(uri3 as Uri)
+
                             uploadTask.continueWithTask { task ->
                                 if (!task.isSuccessful) {
                                     task.exception?.let {
                                         throw it
                                     }
                                 }
-                                ref.downloadUrl
+                                ref3.downloadUrl
                             }.addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    val downloadUri = task.result.toString()
-                                    addMenu(uri1.toString(),uri2.toString(),uri3.toString())
+
+                                    val downloadUri3 = task.result.toString()
+                                    addMenu(downloadUri1,downloadUri2,downloadUri3)
                                 } else {
                                     // Handle failures
                                     // ...
@@ -274,10 +282,7 @@ class UploadMenuActivity : AppCompatActivity() {
         if (userId != null) {
             db.collection("users").document(userId).collection("Menu")
                 .add(signature)
-                .addOnSuccessListener {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                }
+
         }
         if (userId != null) {
             db.collection("users").document(userId).collection("Menu")
@@ -287,11 +292,9 @@ class UploadMenuActivity : AppCompatActivity() {
         if (userId != null) {
             db.collection("users").document(userId).collection("Menu")
                 .add(favorite)
-                .addOnSuccessListener {
-                    val intent = Intent(this,MainActivity::class.java)
-                    startActivity(intent)
-                }
+
         }
+
     }
 
 }
