@@ -19,10 +19,6 @@
         android:id="@+id/fifthItem"
         android:title="Register Truck"
         android:visible="false" />
-    <item
-        android:id="@+id/sixthItem"
-        android:title="Upload Menu"
-        android:visible="true" />
 
 
 </menu>

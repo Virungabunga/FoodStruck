@@ -223,14 +223,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                             .show()
 
                     }
-                    R.id.sixthItem -> {
-                        val intent =Intent(this@MainActivity,UploadMenuActivity::class.java)
-                        startActivity(intent)
 
-                        Toast.makeText(this@MainActivity, "UploadMenu", Toast.LENGTH_SHORT)
-                            .show()
-
-                    }
 
                 }
                 true

@@ -199,8 +199,11 @@ class UploadMenuActivity : AppCompatActivity() {
                             }.addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
 
+
                                     val downloadUri3 = task.result.toString()
                                     addMenu(downloadUri1,downloadUri2,downloadUri3)
+                                    val intent = Intent(this,MainActivity::class.java)
+                                    startActivity(intent)
                                 } else {
                                     // Handle failures
                                     // ...
