@@ -1,11 +1,9 @@
 package edu.ith.foodstruck
 
+//Removed unused imports
 import FoodTruck
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
-import android.util.Log.i
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,13 +14,12 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
-
 class PresentationActivity : AppCompatActivity() {
-    lateinit var ivFoodtruck: ImageView
-    lateinit var tvPresentationTitle: TextView
-    lateinit var tvPresentationBread: TextView
+    private lateinit var ivFoodtruck: ImageView
+    private lateinit var tvPresentationTitle: TextView
+    private lateinit var tvPresentationBread: TextView
 
-    lateinit var tvSignatureName: TextView
+    private lateinit var tvSignatureName: TextView
     lateinit var tvSignatureDescription: TextView
     lateinit var tvSignaturePrice: TextView
     lateinit var ivSignatureImage: ImageView
@@ -67,38 +64,10 @@ class PresentationActivity : AppCompatActivity() {
 
         tvPresentationTitle.text=rName
         tvPresentationBread.text=rInfo
-        val userId = auth.currentUser?.uid
 
+        //Removed unused userID variable
 
-
-        /*if (userId != null) {
-            db.collection("food")
-                .document()
-                .collection("Menu")
-                .get()
-                .addOnSuccessListener { documentSnapshot ->
-                    val foodList:MutableList<Food>
-                    for (document in documentSnapshot.documents){
-                        val dish= document.toObject<Food>()
-                        foodList.add(dish)
-                    }
-
-                    tvSignatureName.text=foodList[0].name
-                    tvSignatureDescription.text=foodList[0].description
-                    tvSignaturePrice.text=foodList[0].price.toString()
-
-                    tvFavoriteName.text=foodList[1].name
-                    tvFavoriteDescription.text=foodList[1].description
-                    tvFavoritePrice.text=foodList[1].price.toString()
-
-
-
-
-
-                }
-        }             */
-
-
+        //Removed unused code
 
 
         Glide.with(this).load(rImge).into(ivFoodtruck)
@@ -110,43 +79,39 @@ class PresentationActivity : AppCompatActivity() {
                 .addOnSuccessListener { documentSnapshot ->
                      truck = documentSnapshot.toObject<FoodTruck>()!!
 
+                    // Condition "truck!= null" is always true - simplified condition
 
-                    if (truck != null) {
-                        db.collection("users").document(truck.userID!!)
-                            .collection("Menu").get()
-                            .addOnSuccessListener { snapshot ->
-                                truck.menuList = mutableListOf()
-                                Log.d("!!!",snapshot.documents.size.toString())
-                                for( Food in snapshot.documents) {
-                                    var menuItem = Food.toObject<Food>()
+                    db.collection("users").document(truck.userID!!)
+                        .collection("Menu").get()
+                        .addOnSuccessListener { snapshot ->
+                            truck.menuList = mutableListOf()
+                            Log.d("!!!",snapshot.documents.size.toString())
+                            for( Food in snapshot.documents) {
+                                val menuItem = Food.toObject<Food>()
 
-                                    if (menuItem != null) {
-                                        truck.menuList!!.add(menuItem)
+                                if (menuItem != null) {
+                                    truck.menuList!!.add(menuItem)
 
-
-                                    }
                                 }
-
-
-                                setMenu()
-
                             }
-                    }
+
+                            setMenu()
+
+                        }
 
                     tvPresentationTitle.text = rName
                     tvPresentationBread.text = rInfo
                     Glide.with(this).load(rImge).into(ivFoodtruck)
 
-                    if (truck != null) {
+                    // Condition "truck!= null" is always true - simplified condition
 
-                        tvPresentationTitle.text = truck.companyName
-                        tvPresentationBread.text = truck.info
-                        Glide.with(this).load(truck.userPicID).into(ivFoodtruck)
-                    }
-                    tvPresentationTitle.text = truck?.companyName
-                    tvPresentationBread.text = truck?.info
+                    tvPresentationTitle.text = truck.companyName
+                    tvPresentationBread.text = truck.info
+                    Glide.with(this).load(truck.userPicID).into(ivFoodtruck)
+                    tvPresentationTitle.text = truck.companyName
+                    tvPresentationBread.text = truck.info
 
-                    Glide.with(this).load(truck?.userPicID).into(ivFoodtruck)
+                    Glide.with(this).load(truck.userPicID).into(ivFoodtruck)
                 }
 
         }
