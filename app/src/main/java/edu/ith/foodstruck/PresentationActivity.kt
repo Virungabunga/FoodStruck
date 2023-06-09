@@ -1,6 +1,5 @@
 package edu.ith.foodstruck
 
-//Removed unused imports
 import FoodTruck
 import android.os.Bundle
 import android.util.Log
@@ -65,11 +64,6 @@ class PresentationActivity : AppCompatActivity() {
         tvPresentationTitle.text=rName
         tvPresentationBread.text=rInfo
 
-        //Removed unused userID variable
-
-        //Removed unused code
-
-
         Glide.with(this).load(rImge).into(ivFoodtruck)
         val foodTruckDocumentId = intent.getStringExtra("FoodTruckID")
 
@@ -113,12 +107,9 @@ class PresentationActivity : AppCompatActivity() {
 
                     Glide.with(this).load(truck.userPicID).into(ivFoodtruck)
                 }
-
         }
 
-
     }
-
 
     fun setMenu(){
         tvSignatureName.text= truck.menuList!![0].name
@@ -138,7 +129,6 @@ class PresentationActivity : AppCompatActivity() {
         Glide.with(this).load(truck.menuList!![0].picture).into(ivFavoriteImage)
 
     }
-
 
 }
 

@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-//Fixed typo in class name - "MyAdapter"
 class MyAdapter(
     val context: Context,
     private var clickListener: FoodTruckListActivity,
@@ -21,18 +20,15 @@ class MyAdapter(
         FoodTruckList = foodTruckList
     }
 
-   // Removed unused code
-
     private val layoutInflater : LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v= layoutInflater.inflate(R.layout.foodtruck_items,parent,false)
-        //Removed unused code
         return ViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val foodTruck = FoodTruckList[position] // Fixed typo "foodTruck"
+        val foodTruck = FoodTruckList[position]
         holder.itemTitle.text=foodTruck.companyName
         holder.itemInfoText.text=foodTruck.info
 
@@ -42,7 +38,6 @@ class MyAdapter(
             clickListener.clickedItem(foodTruck)
         }
     }
-
     override fun getItemCount(): Int {
         return FoodTruckList.size
 
@@ -54,12 +49,7 @@ class MyAdapter(
             var itemTitle = itemView.findViewById<TextView>(R.id.itemTitle)
             var itemInfoText = itemView.findViewById<TextView>(R.id.itemInfoText)
 
-        //Removed empty "init" block
-
-
     }
-
-    //ClickListener is never used, removed
 
 }
 

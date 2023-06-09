@@ -12,9 +12,8 @@ import com.google.firebase.auth.FirebaseAuth
 class OwnerLoginActivity : AppCompatActivity() {
     lateinit var etUserName : EditText
     lateinit var etUserPassword : EditText
-    private lateinit var tvNotRegistered : TextView // Fixed typo
+    private lateinit var tvNotRegistered : TextView
     lateinit var firebaseAuth: FirebaseAuth
-    // Removed unused button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +33,6 @@ class OwnerLoginActivity : AppCompatActivity() {
             loginUser()
         }
 
-
     }
     private fun loginUser(){
         val userName = etUserName.text.toString()
@@ -47,7 +45,6 @@ class OwnerLoginActivity : AppCompatActivity() {
                         val intent=Intent(this,MainActivity::class.java)
                         intent.putExtra("CURRENT_USER",firebaseAuth.currentUser?.uid)
                         startActivity(intent)
-
                     }
 
                 //Replaced "setError" with built in "error" function
@@ -58,7 +55,7 @@ class OwnerLoginActivity : AppCompatActivity() {
             } else if (userName.isEmpty()) {
                 etUserName.error = "Empty fields are not allowed"
 
-            }  // Removed empty "else" block
+            }
         }
     }
 }

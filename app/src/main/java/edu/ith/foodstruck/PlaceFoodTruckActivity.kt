@@ -1,6 +1,5 @@
 package edu.ith.foodstruck
 
-//Removed unused imports
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +10,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import edu.ith.foodstruck.databinding.ActivityPlaceFoodtruckBinding
 
-//Changed "PlaceFoodtruckActivity to "PlaceFoodTruckActivity"
 class PlaceFoodTruckActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap

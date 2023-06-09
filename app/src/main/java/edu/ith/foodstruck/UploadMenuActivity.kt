@@ -17,7 +17,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-
 class UploadMenuActivity : AppCompatActivity() {
     private lateinit var etSignatureName : EditText
     private lateinit var etSignatureDescription : EditText
@@ -89,7 +88,7 @@ class UploadMenuActivity : AppCompatActivity() {
             } else {
                 uploadImage()
             }
-        }       //Favori
+        }       //Favorite
         btUploadDish2.setOnClickListener{
             val imgURI = btUploadDish2.tag as Uri?
             if (imgURI == null) {
@@ -109,9 +108,6 @@ class UploadMenuActivity : AppCompatActivity() {
         }
 
     }
-
-    //Removed unused code
-
     //Added deprecated annotation
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -153,8 +149,6 @@ class UploadMenuActivity : AppCompatActivity() {
     }
 
     //Property access syntax instead of "getTag"
-    //Removed unused parameter "context"
-    //Removed unused parameter imageURI
     private fun uploadImage() {
         val mStorageRef = FirebaseStorage.getInstance().reference
         val uri1 = btUploadDish1.tag
@@ -209,8 +203,6 @@ class UploadMenuActivity : AppCompatActivity() {
                                     addMenu(downloadUri1,downloadUri2,downloadUri3)
                                 }
 
-                                //Removed empty "else" blocks
-
                             }
                         }
                     }
@@ -218,10 +210,7 @@ class UploadMenuActivity : AppCompatActivity() {
             }
 
         }
-
-        //Removed unused code
-
-
+        
     }
     private fun addMenu(uploadUrl1:String, uploadUrl2:String, uploadUrl3:String) {
 

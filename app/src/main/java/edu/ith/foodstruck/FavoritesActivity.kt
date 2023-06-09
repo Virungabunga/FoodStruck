@@ -15,7 +15,6 @@ import com.google.firebase.ktx.Firebase
 
 class FavoritesActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
-    // var layOutManager never used - deleted
     private lateinit var recyclerView: RecyclerView
     private var foodTruckList = ArrayList<FoodTruck>()
     lateinit var auth:FirebaseAuth
@@ -28,7 +27,6 @@ class FavoritesActivity : AppCompatActivity() {
         auth=Firebase.auth
         recyclerView = findViewById(R.id.recyclerView)
         supportActionBar?.setHomeButtonEnabled(true)
-
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = FavoriteAdapter(
@@ -46,20 +44,15 @@ class FavoritesActivity : AppCompatActivity() {
                     val truck = document.toObject<FoodTruck>()
                     if (truck != null)
                         foodTruckList.add(truck)
-
-
                 }
                 adapter.notifyDataSetChanged()
-
             }
     }
-
-    //Fixed typo in variable name "foodTruck"
 
     fun clickedItem(foodTruck: FoodTruck) {
         val intent= Intent(this,PresentationActivity::class.java)
         intent.putExtra("FoodTruckID",foodTruck.documentId)
         startActivity(intent)
     }
-    }
+}
 

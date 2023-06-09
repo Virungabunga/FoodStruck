@@ -1,6 +1,5 @@
 package edu.ith.foodstruck
 
-//Removed unused imports
 import FoodTruck
 import android.app.Activity
 import android.content.Intent
@@ -22,7 +21,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 
-//Removed unused variable "saveCount"
 class RegistrationActivity : AppCompatActivity() {
     lateinit var etFoodtruckName: EditText
     lateinit var etFoodTruckBread: EditText
@@ -37,20 +35,19 @@ class RegistrationActivity : AppCompatActivity() {
         Log.d("RegistrationActivity","${it.data?.getParcelableExtra<LatLng>("LAT_LONG")}")
     }
 
-
     private var latLong : LatLng? = null
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
-        btPlaceFoodtruck = findViewById<Button>(R.id.btPlaceFoodtruck)
+        btPlaceFoodtruck = findViewById(R.id.btPlaceFoodtruck)
         etFoodtruckName = findViewById(R.id.etFoodtruckName)
         etFoodTruckBread = findViewById(R.id.etFoodtruckBread)
         db = Firebase.firestore
         ivUpload =findViewById(R.id.ivUpload)
-        buttonSave = findViewById<Button>(R.id.buttonSave)
-        btnSelectImage = findViewById<Button>(R.id.btnSelectImage)
+        buttonSave = findViewById(R.id.buttonSave)
+        btnSelectImage = findViewById(R.id.btnSelectImage)
         auth=Firebase.auth
         buttonsPressed()
 
@@ -84,7 +81,6 @@ class RegistrationActivity : AppCompatActivity() {
 
     }
 
-
     // Added @Deprecated annotation
 
     @Deprecated("Deprecated in Java")
@@ -109,8 +105,6 @@ class RegistrationActivity : AppCompatActivity() {
             }
         }
     }
-
-    //Removed unused parameter "context
 
     private fun uploadImage(imageFileUri: Uri) {
         val mStorageRef = FirebaseStorage.getInstance().reference
@@ -137,12 +131,8 @@ class RegistrationActivity : AppCompatActivity() {
     }
     private fun addFoodTruck(uploadUrl:String) {
 
-        //Fixed typos in variable names
-
-
         val foodTruckName = etFoodtruckName.text.toString()
         val foodTruckBread = etFoodTruckBread.text.toString()
-
 
         val truck = FoodTruck(
             foodTruckName,

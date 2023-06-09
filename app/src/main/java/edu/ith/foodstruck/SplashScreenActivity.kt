@@ -15,7 +15,6 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         val backgroundImg = findViewById<ImageView>(R.id.ivImage)
-        //Typo fix
         val slideAnimation = AnimationUtils.loadAnimation(this,R.anim.slide)
 
         backgroundImg.startAnimation(slideAnimation)

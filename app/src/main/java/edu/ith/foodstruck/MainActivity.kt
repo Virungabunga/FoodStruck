@@ -1,6 +1,5 @@
 package edu.ith.foodstruck
 
-//Removed unused imports
 import FoodTruck
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -62,7 +61,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var addView: ImageView
     private var myPos: LatLng = LatLng(59.0, 18.0)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = inflate(layoutInflater)
@@ -96,7 +94,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     }
 
-
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -123,15 +120,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
 
     }
-
     private fun signInAnonymously() {
         if (auth.currentUser == null) {
 
             auth.signInAnonymously()
         }
-
     }
-
     private fun locationData() {
 
 
@@ -143,7 +137,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     locationResult.lastLocation.latitude,
                     locationResult.lastLocation.longitude
                 )
-               // Removed empty "for" block
             }
         }
     }
@@ -247,7 +240,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
             updateUI()
         }
-
 
     }
 
@@ -360,9 +352,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mMap.uiSettings.isZoomControlsEnabled = true
         googleMap.setOnMarkerClickListener(this)
 
-
     }
-
 
     private fun readFromFirestore() {
         db.collection("FoodTruck")
@@ -425,7 +415,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val truck: FoodTruck? = p0.tag as? FoodTruck
 
         if (truck != null) {
-
 
             updateCardUI(truck)
 

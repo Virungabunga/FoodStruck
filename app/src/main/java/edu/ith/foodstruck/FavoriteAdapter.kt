@@ -10,24 +10,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-//Fixed typo in "FavoriteAdapter"
 class FavoriteAdapter (val context: Context,
                        private var clickListener: FavoritesActivity,
                        private var FoodTruckList: ArrayList<FoodTruck>): RecyclerView
 .Adapter<FavoriteAdapter.ViewHolder>() {
 
-
-    //Removed unused function
-
     private val layoutInflater : LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v= layoutInflater.inflate(R.layout.foodtruck_items,parent,false)
-        // Removed unused code
         return ViewHolder(v)
     }
 
-    // Fixed typo "foodTruck"
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val foodTruck = FoodTruckList[position]
         holder.itemTitle.text=foodTruck.companyName
@@ -49,8 +43,6 @@ class FavoriteAdapter (val context: Context,
         var itemImage = itemView.findViewById<ImageView>(R.id.itemImage)
         var itemTitle = itemView.findViewById<TextView>(R.id.itemTitle)
         var itemInfoText = itemView.findViewById<TextView>(R.id.itemInfoText)
-
-        //Removed empty init block
 
     }
     interface ClickListener{

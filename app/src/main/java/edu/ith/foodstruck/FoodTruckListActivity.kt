@@ -16,16 +16,13 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-//Fixed typo in class name "FoodTruck"
 class FoodTruckListActivity : AppCompatActivity() , FavoriteAdapter.ClickListener {
 
     private lateinit var db: FirebaseFirestore
-    //Unused variable "layoutManager" removed
     private lateinit var recyclerView: RecyclerView
     private var FoodTruckList = ArrayList<FoodTruck>()
     private var filteredList = ArrayList<FoodTruck>()
     private var adapter: MyAdapter? = null
-
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,18 +43,12 @@ class FoodTruckListActivity : AppCompatActivity() , FavoriteAdapter.ClickListene
                     val truck = document.toObject<FoodTruck>()
                     if (truck != null)
                         FoodTruckList.add(truck)
-
-
                 }
                 adapter?.notifyDataSetChanged()
-
             }
-
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
 
         menuInflater.inflate(R.menu.menu_item, menu)
         val item = menu?.findItem(R.id.search_action)
@@ -69,7 +60,6 @@ class FoodTruckListActivity : AppCompatActivity() , FavoriteAdapter.ClickListene
 
             @SuppressLint("NotifyDataSetChanged")
             override fun onQueryTextChange(newText: String?): Boolean {
-                //  Removed unused function
 
                 filteredList.clear()
                 val searchText = newText!!.lowercase(Locale.getDefault())
@@ -92,10 +82,7 @@ class FoodTruckListActivity : AppCompatActivity() , FavoriteAdapter.ClickListene
                     }
                     adapter?.filterList(filteredList)
 
-
                 } else {
-
-                    // Removed unused function
                     adapter?.filterList(FoodTruckList)
 
                 }

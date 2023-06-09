@@ -1,6 +1,5 @@
 package edu.ith.foodstruck
 
-//Removed unused imports
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -58,7 +57,7 @@ class OwnerSignUpActivity : AppCompatActivity() {
                 } else if (userName.isEmpty()) {
                     etSignUpName.error = "Empty fields are not allowed"
 
-                } //Removed empty "else" block
+                }
             }
 
         }
