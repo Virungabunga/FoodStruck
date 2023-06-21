@@ -2,7 +2,6 @@ package edu.ith.foodstruck
 
 import FoodTruck
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,53 +20,40 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import kotlin.properties.Delegates
 
 class RegistrationActivity : AppCompatActivity() {
     lateinit var etFoodtruckName: EditText
     lateinit var etFoodTruckBread: EditText
     lateinit var ivUpload: ImageView
-   private var saveCount by Delegates.notNull<Int>()
     lateinit var db: FirebaseFirestore
     lateinit var buttonSave: Button
     lateinit var btnSelectImage:Button
     lateinit var auth:FirebaseAuth
     lateinit var btPlaceFoodtruck:Button
-    val placeFoodTruck = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+    private val placeFoodTruck = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
        latLong = it.data?.getParcelableExtra("LAT_LONG",)
         Log.d("RegistrationActivity","${it.data?.getParcelableExtra<LatLng>("LAT_LONG")}")
     }
 
-
-
-    var latLong : LatLng? = null
+    private var latLong : LatLng? = null
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
-         btPlaceFoodtruck = findViewById<Button>(R.id.btPlaceFoodtruck)
-
+        btPlaceFoodtruck = findViewById(R.id.btPlaceFoodtruck)
         etFoodtruckName = findViewById(R.id.etFoodtruckName)
         etFoodTruckBread = findViewById(R.id.etFoodtruckBread)
         db = Firebase.firestore
         ivUpload =findViewById(R.id.ivUpload)
-        buttonSave = findViewById<Button>(R.id.buttonSave)
-        btnSelectImage = findViewById<Button>(R.id.btnSelectImage)
+        buttonSave = findViewById(R.id.buttonSave)
+        btnSelectImage = findViewById(R.id.btnSelectImage)
         auth=Firebase.auth
         buttonsPressed()
 
-
-
-
-
-
     }
 
-
-
-
-    fun buttonsPressed(){
+    private fun buttonsPressed(){
 
         btnSelectImage.setOnClickListener {
             ImagePicker.with(this)
@@ -77,47 +63,50 @@ class RegistrationActivity : AppCompatActivity() {
                 .start()
         }
 
-
-
         buttonSave.setOnClickListener {
-
-
 
             val imgURI = buttonSave.tag as Uri?
             if (imgURI == null) {
                 Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
             } else {
-               uploadImage(this, imgURI)
+               uploadImage(imgURI)
 
             }
 
         }
         btPlaceFoodtruck.setOnClickListener(){
-            val intent = Intent(this,PlaceFoodtruckActivity::class.java)
+            val intent = Intent(this,PlaceFoodTruckActivity::class.java)
             placeFoodTruck.launch(intent)
         }
 
     }
 
+    // Added @Deprecated annotation
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            //Image Uri will not be null for RESULT_OK
-            val uri: Uri = data?.data!!
+        // Replaced "if" with "when"
+         when (resultCode) {
+            Activity.RESULT_OK -> {
+                //Image Uri will not be null for RESULT_OK
+                val uri: Uri = data?.data!!
 
-            // Use Uri object instead of File to avoid storage permissions
-            ivUpload.setImageURI(uri)
-            buttonSave.setTag(uri)
+                // Use Uri object instead of File to avoid storage permissions
+                ivUpload.setImageURI(uri)
+                buttonSave.tag = uri
 
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            }
+            ImagePicker.RESULT_ERROR -> {
+                Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    fun uploadImage(context: Context, imageFileUri: Uri) {
+    private fun uploadImage(imageFileUri: Uri) {
         val mStorageRef = FirebaseStorage.getInstance().reference
 
         val ref = mStorageRef.child("images/${auth.currentUser?.uid}.png")
@@ -136,21 +125,18 @@ class RegistrationActivity : AppCompatActivity() {
                 addFoodTruck(downloadUri)
             } else {
                 // Handle failures
-                // ...
             }
         }
 
     }
-    fun addFoodTruck(uploadUrl:String) {
+    private fun addFoodTruck(uploadUrl:String) {
 
-
-        val foodtruckName = etFoodtruckName.text.toString()
-        val foodtruckBread = etFoodTruckBread.text.toString()
-
+        val foodTruckName = etFoodtruckName.text.toString()
+        val foodTruckBread = etFoodTruckBread.text.toString()
 
         val truck = FoodTruck(
-            foodtruckName,
-            foodtruckBread,
+            foodTruckName,
+            foodTruckBread,
             R.drawable.smallicon, latLong?.longitude,
            latLong?.latitude ,
             userID = auth.currentUser?.uid,
@@ -160,7 +146,6 @@ class RegistrationActivity : AppCompatActivity() {
         db.collection("FoodTruck")
             .add(truck)
             .addOnSuccessListener {
-
 
                 val intent = Intent(this, UploadMenuActivity::class.java)
                 startActivity(intent)

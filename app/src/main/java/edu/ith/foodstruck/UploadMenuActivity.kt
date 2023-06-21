@@ -1,7 +1,6 @@
 package edu.ith.foodstruck
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,7 +17,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-
 class UploadMenuActivity : AppCompatActivity() {
     private lateinit var etSignatureName : EditText
     private lateinit var etSignatureDescription : EditText
@@ -35,7 +33,7 @@ class UploadMenuActivity : AppCompatActivity() {
     private lateinit var etWildPrice : EditText
     private lateinit var ivWild : ImageView
     private lateinit var auth: FirebaseAuth
-    lateinit var db: FirebaseFirestore
+    private lateinit var db: FirebaseFirestore
     private lateinit var btUploadDish1 :Button
     private lateinit var btUploadDish2 :Button
     private lateinit var btUploadDish3 :Button
@@ -59,17 +57,13 @@ class UploadMenuActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         db = Firebase.firestore
-        btUploadDish1 = findViewById<Button>(R.id.btUploadPic1)
-        btUploadDish2 = findViewById<Button>(R.id.btUploadPic2)
-        btUploadDish3 = findViewById<Button>(R.id.btUploadPic3)
+        btUploadDish1 = findViewById(R.id.btUploadPic1)
+        btUploadDish2 = findViewById(R.id.btUploadPic2)
+        btUploadDish3 = findViewById(R.id.btUploadPic3)
         buttonsPressed()
 
-
-
-
-
     }
-    fun buttonsPressed(){
+    private fun buttonsPressed(){
         ivSignature.setOnClickListener{ImagePicker.with(this)
             .crop()
             .compress(1024)
@@ -92,15 +86,15 @@ class UploadMenuActivity : AppCompatActivity() {
             if (imgURI == null) {
                 Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
             } else {
-                uploadImage(this, imgURI)
+                uploadImage()
             }
-        }       //Favori
+        }       //Favorite
         btUploadDish2.setOnClickListener{
             val imgURI = btUploadDish2.tag as Uri?
             if (imgURI == null) {
                 Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
             } else {
-                uploadImage(this, imgURI)
+                uploadImage()
             }
         }       //Wild
         btUploadDish3.setOnClickListener{
@@ -109,51 +103,57 @@ class UploadMenuActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please select image first", Toast.LENGTH_SHORT).show()
             } else {
 
-                uploadImage(this, imgURI)
+                uploadImage()
             }
         }
 
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?,) {
+    //Added deprecated annotation
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            //Image Uri will not be null for RESULT_OK
-            val uri: Uri = data?.data!!
-//            btUploadDish1.setTag(uri)
-//            ivWild.setImageURI(uri)
+      //Replaced "if" with "when"
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                //Image Uri will not be null for RESULT_OK
+                val uri: Uri = data?.data!!
 
-            Log.d("!!!", requestCode.toString())
+                Log.d("!!!", requestCode.toString())
 
-             when (requestCode){
-                111 -> {btUploadDish1.setTag(uri)
-                      ivWild.setImageURI(uri)}
+                when (requestCode){
+                    111 -> {
+                        btUploadDish1.tag = uri
+                        ivWild.setImageURI(uri)}
+
+                    222 ->  {
+                        btUploadDish2.tag = uri
+                        ivFavorite.setImageURI(uri) }
+
+                    333 ->  {
+                        btUploadDish3.tag = uri
+                        ivSignature.setImageURI(uri)}
+
+                    else  -> return
+                }
+                // Use Uri object instead of File to avoid storage permissions
 
 
-                222 ->  { btUploadDish2.setTag(uri)
-                       ivFavorite.setImageURI(uri) }
-
-                333 ->  { btUploadDish3.setTag(uri)
-                       ivSignature.setImageURI(uri)}
-                 else  -> return
             }
-            // Use Uri object instead of File to avoid storage permissions
-
-
-
-
-
-
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            ImagePicker.RESULT_ERROR -> {
+                Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            }
         }
     }
-    fun uploadImage(context: Context, imageFileUri: Uri) {
+
+    //Property access syntax instead of "getTag"
+    private fun uploadImage() {
         val mStorageRef = FirebaseStorage.getInstance().reference
-        val uri1 = btUploadDish1.getTag()
-        val uri2 = btUploadDish2.getTag()
-        val uri3 = btUploadDish3.getTag()
+        val uri1 = btUploadDish1.tag
+        val uri2 = btUploadDish2.tag
+        val uri3 = btUploadDish3.tag
 
         val ref1 = mStorageRef.child("images/${auth.currentUser?.uid}/dish1png")
         val ref2 = mStorageRef.child("images/${auth.currentUser?.uid}/dish2.png")
@@ -201,43 +201,18 @@ class UploadMenuActivity : AppCompatActivity() {
 
                                     val downloadUri3 = task.result.toString()
                                     addMenu(downloadUri1,downloadUri2,downloadUri3)
-                                } else {
-                                    // Handle failures
-                                    // ...
                                 }
+
                             }
-                        } else {
-                            // Handle failures
-                            // ...
                         }
                     }
-                } else {
-                    // Handle failures
-                    // ...
                 }
             }
 
         }
-//        val uploadTask = ref.putFile(imageFileUri)
-//        uploadTask.continueWithTask { task ->
-//            if (!task.isSuccessful) {
-//                task.exception?.let {
-//                    throw it
-//                }
-//            }
-//            ref.downloadUrl
-//        }.addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                val downloadUri = task.result.toString()
-//                addMenu(downloadUri)
-//            } else {
-//                // Handle failures
-//                // ...
-//            }
-//        }
-
+        
     }
-    fun addMenu(uploadUrl1:String,uploadUrl2:String,uploadUrl3:String) {
+    private fun addMenu(uploadUrl1:String, uploadUrl2:String, uploadUrl3:String) {
 
         val userId = auth.currentUser?.uid
 
@@ -245,12 +220,9 @@ class UploadMenuActivity : AppCompatActivity() {
         val signatureDescription = etSignatureDescription.text.toString()
         val signaturePrice = etSignaturePrice.text.toString().toInt()
 
-
         val wildName = etWildName.text.toString()
         val wildDescription = etWildDescription.text.toString()
         val wildPrice = etWildPrice.text.toString().toInt()
-
-
 
         val favoriteName = etFavoriteName.text.toString()
         val favoriteDescription = etFavoriteDescription.text.toString()
@@ -260,23 +232,20 @@ class UploadMenuActivity : AppCompatActivity() {
             signatureName,
             signatureDescription,
             signaturePrice,
-            uploadUrl3,
-            auth.currentUser?.uid
+            uploadUrl3
 
-            )
+        )
         val favorite = Food (
             favoriteName,
             favoriteDescription,
             favoritePrice,
-            uploadUrl2,
-            auth.currentUser?.uid
-                )
+            uploadUrl2
+        )
         val wild = Food(
             wildName,
             wildDescription,
             wildPrice,
-            uploadUrl1,
-            auth.currentUser?.uid
+            uploadUrl1
 
         )
         if (userId != null) {

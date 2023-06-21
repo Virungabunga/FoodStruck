@@ -1,6 +1,7 @@
 package edu.ith.foodstruck
 
 import FoodTruck
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,28 +14,26 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import edu.ith.foodstruck.myAdapter.ClickListener
 import java.util.*
 
-class FoodtruckListActivity : AppCompatActivity() , ClickListener {
+class FoodTruckListActivity : AppCompatActivity() , FavoriteAdapter.ClickListener {
 
     private lateinit var db: FirebaseFirestore
-    private var layoutManager: RecyclerView.LayoutManager? = null
     private lateinit var recyclerView: RecyclerView
     private var FoodTruckList = ArrayList<FoodTruck>()
     private var filteredList = ArrayList<FoodTruck>()
-    private var adapter: myAdapter? = null
+    private var adapter: MyAdapter? = null
 
-
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foodtruck_list)
         db = Firebase.firestore
-        recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         supportActionBar?.setHomeButtonEnabled(true)
 
-        adapter = myAdapter( this,this@FoodtruckListActivity,FoodTruckList)
+        adapter = MyAdapter( this,this@FoodTruckListActivity,FoodTruckList)
         recyclerView.adapter = adapter
 
         db.collection("FoodTruck")
@@ -44,46 +43,35 @@ class FoodtruckListActivity : AppCompatActivity() , ClickListener {
                     val truck = document.toObject<FoodTruck>()
                     if (truck != null)
                         FoodTruckList.add(truck)
-
-
                 }
                 adapter?.notifyDataSetChanged()
-
             }
-
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
 
         menuInflater.inflate(R.menu.menu_item, menu)
         val item = menu?.findItem(R.id.search_action)
         val searchView = item?.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-
-
                 return false
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onQueryTextChange(newText: String?): Boolean {
-                //  FoodTruckList.clear()
 
-
-                Log.d("!!!", "typing")
                 filteredList.clear()
-                val searchText = newText!!.toLowerCase(Locale.getDefault())
+                val searchText = newText!!.lowercase(Locale.getDefault())
                 if (searchText.isNotEmpty()) {
                     FoodTruckList.forEach {
-                        if (it.companyName?.toLowerCase(Locale.getDefault())!!
-                                .contains(searchText) || it.info?.toLowerCase(
+                        if (it.companyName?.lowercase(Locale.getDefault())!!
+                                .contains(searchText) || it.info?.lowercase(
                                 Locale.getDefault()
                             )!!.contains(searchText)
                         ) {
                             filteredList.add(it)
                             Log.d("!!!", "${it.companyName}")
-
 
                         }
 
@@ -94,10 +82,7 @@ class FoodtruckListActivity : AppCompatActivity() , ClickListener {
                     }
                     adapter?.filterList(filteredList)
 
-
                 } else {
-
-                    // filteredList.addAll(FoodTruckList)
                     adapter?.filterList(FoodTruckList)
 
                 }
@@ -105,18 +90,16 @@ class FoodtruckListActivity : AppCompatActivity() , ClickListener {
                 return false
             }
 
-
         })
-
 
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun clickedItem(foodtruck: FoodTruck) {
-       Log.e("!!!","you clicked ${foodtruck.companyName}")
+    override fun clickedItem(foodTruck: FoodTruck) {
+       Log.e("!!!","you clicked ${foodTruck.companyName}")
 
         val intent= Intent(this,PresentationActivity::class.java)
-        intent.putExtra("FoodTruckID",foodtruck.documentId)
+        intent.putExtra("FoodTruckID",foodTruck.documentId)
         startActivity(intent)
     }
 }

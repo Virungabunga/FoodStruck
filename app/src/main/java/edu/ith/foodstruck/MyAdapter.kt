@@ -10,44 +10,36 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class myAdapter(
+class MyAdapter(
     val context: Context,
-    var clickListener: FoodtruckListActivity,
+    private var clickListener: FoodTruckListActivity,
     private var FoodTruckList: ArrayList<FoodTruck>): RecyclerView
-                                            .Adapter<myAdapter.ViewHolder>() {
+                                            .Adapter<MyAdapter.ViewHolder>() {
 
-    fun filterList(foodTrucklist: ArrayList<FoodTruck>){
-        FoodTruckList = foodTrucklist
+    fun filterList(foodTruckList: ArrayList<FoodTruck>){
+        FoodTruckList = foodTruckList
     }
 
-    //fun setOnItemClickListener(listener: onItemClickListener){
-      //  mListener=listener
-    //}
-
-    val layoutInflater : LayoutInflater = LayoutInflater.from(context)
+    private val layoutInflater : LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v= layoutInflater.inflate(R.layout.foodtruck_items,parent,false)
-       //val v = LayoutInflater.from(parent.context).inflate(R.layout.foodtruck_items,parent,false)
         return ViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val foodtruck = FoodTruckList[position]
-        holder.itemTitle.text=foodtruck.companyName
-        holder.itemInfoText.text=foodtruck.info
+        val foodTruck = FoodTruckList[position]
+        holder.itemTitle.text=foodTruck.companyName
+        holder.itemInfoText.text=foodTruck.info
 
-
-        Glide.with(context).load(foodtruck?.userPicID).into(holder.itemImage)
+        Glide.with(context).load(foodTruck.userPicID).into(holder.itemImage)
 
         holder.itemView.setOnClickListener{
-            clickListener.clickedItem(foodtruck)
+            clickListener.clickedItem(foodTruck)
         }
     }
-
     override fun getItemCount(): Int {
         return FoodTruckList.size
-
 
     }
 
@@ -57,17 +49,8 @@ class myAdapter(
             var itemTitle = itemView.findViewById<TextView>(R.id.itemTitle)
             var itemInfoText = itemView.findViewById<TextView>(R.id.itemInfoText)
 
-
-
-        init {
-
-        }
-
-
     }
-    interface ClickListener{
-        fun clickedItem(foodtruck : FoodTruck)
-    }
+
 }
 
 

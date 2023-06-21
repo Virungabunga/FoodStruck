@@ -1,7 +1,5 @@
-import android.net.Uri
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.Exclude
-import com.google.firebase.firestore.IgnoreExtraProperties
 import edu.ith.foodstruck.Food
 
 data class FoodTruck (var companyName: String? = null,
